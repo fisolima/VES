@@ -3,7 +3,6 @@ import com.fisolima.ves.VESException;
 import com.fisolima.ves.config.EtcdConfigProvider;
 import com.fisolima.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
-import com.justinsb.etcd.EtcdResult;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +13,14 @@ import java.net.URI;
 
 public class ConfigLoaderUnitTest {    
     
+    private String etcdAddress = "http://127.0.0.1:2379";
+    
     public ConfigLoaderUnitTest() {
     }
     
     @Before
     public void setUp() throws Exception {
-        EtcdClient etcdClient = new EtcdClient(URI.create("http://127.0.0.1:2379"));
+        EtcdClient etcdClient = new EtcdClient(URI.create(etcdAddress));
         
         etcdClient.set("VESStorage", "storage");
         etcdClient.set("VESDatabase", "database");
@@ -27,7 +28,7 @@ public class ConfigLoaderUnitTest {
     
     @After
     public void tearDown()  throws Exception {
-        EtcdClient etcdClient = new EtcdClient(URI.create("http://127.0.0.1:2379"));
+        EtcdClient etcdClient = new EtcdClient(URI.create(etcdAddress));
         
         etcdClient.delete("VESStorage");
         etcdClient.delete("VESDatabase");
@@ -54,7 +55,7 @@ public class ConfigLoaderUnitTest {
     }
             
     @Test
-    public void EtcdConfigProvider_Exists()
+    public void EtcdConfigProvider_Exists() throws VESException
     {
         EtcdConfigProvider cfg = new EtcdConfigProvider("storage", "storage");
                 
@@ -64,7 +65,7 @@ public class ConfigLoaderUnitTest {
     @Test
     public void EtcdConfigProvider_Should_Read_Keys() throws VESException
     {
-        EtcdConfigProvider cfg = EtcdConfigProvider.create( "http://127.0.0.1:2379", "VESStorage", "VESDatabase");
+        EtcdConfigProvider cfg = EtcdConfigProvider.create( etcdAddress, "VESStorage", "VESDatabase");
         
         assertEquals("storage", cfg.getStoragePath());
         assertEquals("database", cfg.getDatabaseConnectionString());
@@ -81,7 +82,7 @@ public class ConfigLoaderUnitTest {
     @Test(expected=VESException.class)
     public void EtcdConfigProvider_Should_Fail_On_Missing_Storage_Key() throws VESException
     {
-        EtcdConfigProvider cfg = EtcdConfigProvider.create( "http://127.0.0.1:2379", "__NOSTORAGE__", "VESDatabase");
+        EtcdConfigProvider cfg = EtcdConfigProvider.create( etcdAddress, "__NOSTORAGE__", "VESDatabase");
         
         assertFalse(true);
     }
@@ -89,7 +90,7 @@ public class ConfigLoaderUnitTest {
     @Test(expected=VESException.class)
     public void EtcdConfigProvider_Should_Fail_On_Missing_Database_Key() throws VESException
     {
-        EtcdConfigProvider cfg = EtcdConfigProvider.create( "http://127.0.0.1:2379", "VESStorage", "__NODB__");
+        EtcdConfigProvider cfg = EtcdConfigProvider.create( etcdAddress, "VESStorage", "__NODB__");
         
         assertFalse(true);
     }
