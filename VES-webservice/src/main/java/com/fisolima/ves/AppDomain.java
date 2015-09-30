@@ -1,5 +1,6 @@
 package com.fisolima.ves;
 
+import com.fisolima.ves.config.DirectConfigProvider;
 import com.fisolima.ves.config.IConfigProvider;
 
 public final class AppDomain
@@ -17,6 +18,14 @@ public final class AppDomain
     }
     
     /**
+     * Set the domain config provider
+     * @param _configProvider 
+     */
+    static void setConfigProvider(IConfigProvider _configProvider) {
+        configProvider = _configProvider;
+    }
+    
+    /**
      * Return the application domain identifier
      * 
      * @return 
@@ -29,4 +38,6 @@ public final class AppDomain
         appDomainID = _appDomainID;
         configProvider = _configProvider;
     }
+
+    
 }

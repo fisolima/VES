@@ -25,7 +25,7 @@ public class EtcdConfigProvider extends DirectConfigProvider{
         }
     }
 
-    public EtcdConfigProvider(String storagePath, String databaseConnectionString) {
+    public EtcdConfigProvider(String storagePath, String databaseConnectionString) throws VESException {
         super(storagePath, databaseConnectionString);
     }
 

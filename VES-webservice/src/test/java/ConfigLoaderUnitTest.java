@@ -56,7 +56,7 @@ public class ConfigLoaderUnitTest {
     @Test
     public void EtcdConfigProvider_Exists()
     {
-        EtcdConfigProvider cfg = new EtcdConfigProvider("", "");
+        EtcdConfigProvider cfg = new EtcdConfigProvider("storage", "storage");
                 
         assertNotNull(cfg);
     }
