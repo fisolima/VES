@@ -5,10 +5,13 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.After;
+import org.junit.Before;
 
 
 public class RESTapiTest extends JerseyTest
 {
+    
     @Override
     protected Application configure()
     {
@@ -21,19 +24,23 @@ public class RESTapiTest extends JerseyTest
         return app;
     }
     
+    @Before
+    public void Startup()
+    {
+        AppDomain.Initialize("VES Test Webservice", null);
+    }
+    
+    @After
+    public void Shutdown()
+    {
+        
+    }
+    
     @Test
     public void MainTest()
     {
         final String result = target("main").request().get(String.class);
         
-        assertEquals("VES WebService", result);        
+        assertEquals("VES Test Webservice", result);        
     }
-    
-//    @Test
-//    public void MainTest2()
-//    {
-//        final String result = target("main2").request().get(String.class);
-//        
-//        assertEquals("this is main2", result);        
-//    }
 }

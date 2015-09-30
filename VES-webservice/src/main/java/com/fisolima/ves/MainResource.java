@@ -38,7 +38,7 @@ public class MainResource {
     @GET
     @Produces("application/json")
     public String getJson() {
-        return "VES WebService";
+        return AppDomain.getID();
     }
 
     /**

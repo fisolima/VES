@@ -5,6 +5,7 @@
  */
 package com.fisolima.ves;
 
+import com.fisolima.ves.config.NullConfigProvider;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -13,8 +14,14 @@ import javax.ws.rs.core.Application;
  * @author pippo
  */
 @javax.ws.rs.ApplicationPath("ws")
-public class ApplicationConfig extends Application {
-
+public class ApplicationConfig extends Application {    
+    
+    public ApplicationConfig() //@Context ServletContext servletContext) {
+    {
+        AppDomain.Initialize( "VES web service",
+                                new NullConfigProvider());        
+    }
+            
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
@@ -29,6 +36,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.fisolima.ves.ExceptionResolver.class);
         resources.add(com.fisolima.ves.MainResource.class);
     }
     
