@@ -39,6 +39,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.ves.ExceptionResolver.class);
         resources.add(com.ves.restapi.Configuration.class);
         resources.add(com.ves.restapi.Main.class);
+        resources.add(com.ves.restapi.Sessions.class);
     }
     
 }

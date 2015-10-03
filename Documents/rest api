@@ -1,0 +1,8 @@
+/main
+GET "app id"
+
+/cfg/direct
+PUT {storage:"", database:""}
+/cfg/etcd
+PUT {storageKey:"", databaseKey:"", etcdEndPoint:""}
+	

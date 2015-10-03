@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import com.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
 import com.justinsb.etcd.EtcdClientException;
+import com.ves.restapi.Sessions;
 import java.net.URI;
 import java.util.Set;
 import javax.ws.rs.client.Entity;
@@ -31,7 +32,8 @@ public class RESTapiTest extends JerseyTest
         resources.add(Main.class);
         resources.add(com.ves.ExceptionResolver.class);
         resources.add(Configuration.class);
-        
+        resources.add(Sessions.class);
+                
         Application app = new ResourceConfig(resources);
         
         return app;
@@ -107,5 +109,14 @@ public class RESTapiTest extends JerseyTest
         Response res = target("cfg/etcd").request().put( Entity.entity(value, MediaType.TEXT_PLAIN) );
         
         assertEquals(400, res.getStatus());
+    }
+    
+    @Test
+    public void Sessions_Should_Return_List()
+    {
+        Response res = target("sessions").request().get();
+        
+        assertEquals( 200, res.getStatus());
+        assertEquals("[]", res.readEntity(String.class));
     }
 }
