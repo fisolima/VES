@@ -1,6 +1,6 @@
-package com.fisolima.ves.config;
+package com.ves.config;
 
-import com.fisolima.ves.VESException;
+import com.ves.VESException;
 
 
 public interface IConfigProvider {
@@ -9,7 +9,7 @@ public interface IConfigProvider {
      * Return the storage path to save file resources
      * 
      * @return Physical storage path
-     * @throws com.fisolima.ves.VESException
+     * @throws com.ves.VESException
      */
     public String getStoragePath() throws VESException;
     
@@ -17,7 +17,7 @@ public interface IConfigProvider {
      * Return the connection string for the database driver
      * 
      * @return Connection string
-     * @throws com.fisolima.ves.VESException
+     * @throws com.ves.VESException
      */
     public String getDatabaseConnectionString() throws VESException;
 }

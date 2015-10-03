@@ -1,7 +1,7 @@
 
-import com.fisolima.ves.VESException;
-import com.fisolima.ves.config.EtcdConfigProvider;
-import com.fisolima.ves.config.NullConfigProvider;
+import com.ves.VESException;
+import com.ves.config.EtcdConfigProvider;
+import com.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
 import org.junit.After;
 import org.junit.Before;

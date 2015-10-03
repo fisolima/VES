@@ -1,5 +1,5 @@
 
-package com.fisolima.ves;
+package com.ves;
 
 /**
  * Define an exception type for VES operations

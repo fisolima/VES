@@ -1,9 +1,10 @@
-package com.fisolima.ves;
+package com.ves.restapi;
 
-import com.fisolima.ves.config.DirectConfigProvider;
-import com.fisolima.ves.config.EtcdConfigProvider;
-import com.google.gson.Gson;
-import java.util.HashMap;
+import com.ves.AppDomain;
+import com.ves.VESException;
+import com.ves.helpers.JsonSerialization;
+import com.ves.config.DirectConfigProvider;
+import com.ves.config.EtcdConfigProvider;
 import java.util.Map;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -14,12 +15,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("cfg")
-public class ConfigResource {
+public class Configuration {
 
     @Context
     private UriInfo context;
 
-    public ConfigResource() {
+    public Configuration() {
     }
     
     @PUT
@@ -32,11 +33,7 @@ public class ConfigResource {
         
         try
         {
-            Gson gson = new Gson();
-
-            Map<String, String> configMap = new HashMap<String, String>();
-
-            configMap = gson.fromJson(jsonParams, configMap.getClass());        
+            Map<String,String> configMap = JsonSerialization.Parse(jsonParams);
 
             storageValue = configMap.get("storage");
             databaseValue = configMap.get("database");
@@ -56,7 +53,7 @@ public class ConfigResource {
     @PUT
     @Path("etcd")
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response setEtcdConfigParams( String jsonParams) throws VESException
+    public Response setEtcdConfigParams(String jsonParams) throws VESException
     {
         String storageKey = "";
         String databaseKey = "";
@@ -64,11 +61,7 @@ public class ConfigResource {
         
         try
         {
-            Gson gson = new Gson();
-
-            Map<String, String> configMap = new HashMap<String, String>();
-
-            configMap = gson.fromJson(jsonParams, configMap.getClass());        
+            Map<String,String> configMap = JsonSerialization.Parse(jsonParams);
 
             storageKey = configMap.get("storageKey");
             databaseKey = configMap.get("databaseKey");

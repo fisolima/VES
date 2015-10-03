@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.fisolima.ves;
+package com.ves;
 
-import com.fisolima.ves.config.NullConfigProvider;
+import com.ves.config.NullConfigProvider;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -36,9 +36,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.fisolima.ves.ConfigResource.class);
-        resources.add(com.fisolima.ves.ExceptionResolver.class);
-        resources.add(com.fisolima.ves.MainResource.class);
+        resources.add(com.ves.ExceptionResolver.class);
+        resources.add(com.ves.restapi.Configuration.class);
+        resources.add(com.ves.restapi.Main.class);
     }
     
 }

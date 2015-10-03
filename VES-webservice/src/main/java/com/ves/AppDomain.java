@@ -1,7 +1,7 @@
-package com.fisolima.ves;
+package com.ves;
 
-import com.fisolima.ves.config.DirectConfigProvider;
-import com.fisolima.ves.config.IConfigProvider;
+import com.ves.config.DirectConfigProvider;
+import com.ves.config.IConfigProvider;
 
 public final class AppDomain
 {
@@ -21,7 +21,7 @@ public final class AppDomain
      * Set the domain config provider
      * @param _configProvider 
      */
-    static void setConfigProvider(IConfigProvider _configProvider) {
+    public static void setConfigProvider(IConfigProvider _configProvider) {
         configProvider = _configProvider;
     }
     

@@ -1,7 +1,10 @@
+import com.ves.VESException;
+import com.ves.AppDomain;
+import com.ves.restapi.Configuration;
+import com.ves.restapi.Main;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import com.fisolima.ves.*;
-import com.fisolima.ves.config.NullConfigProvider;
+import com.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
 import com.justinsb.etcd.EtcdClientException;
 import java.net.URI;
@@ -25,9 +28,9 @@ public class RESTapiTest extends JerseyTest
     {
         Set<Class<?>> resources = new java.util.HashSet<>();
         
-        resources.add(MainResource.class);
-        resources.add(com.fisolima.ves.ExceptionResolver.class);
-        resources.add(ConfigResource.class);
+        resources.add(Main.class);
+        resources.add(com.ves.ExceptionResolver.class);
+        resources.add(Configuration.class);
         
         Application app = new ResourceConfig(resources);
         

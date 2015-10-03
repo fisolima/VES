@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.fisolima.ves;
+package com.ves.restapi;
 
+import com.ves.AppDomain;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
@@ -20,7 +15,7 @@ import javax.ws.rs.PUT;
  * @author pippo
  */
 @Path("main")
-public class MainResource {
+public class Main {
 
     @Context
     private UriInfo context;
@@ -28,7 +23,7 @@ public class MainResource {
     /**
      * Creates a new instance of MainResource
      */
-    public MainResource() {
+    public Main() {
     }
 
     /**

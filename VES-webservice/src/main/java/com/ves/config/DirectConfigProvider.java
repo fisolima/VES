@@ -1,6 +1,6 @@
-package com.fisolima.ves.config;
+package com.ves.config;
 
-import com.fisolima.ves.VESException;
+import com.ves.VESException;
 
 public class DirectConfigProvider implements IConfigProvider {
 
