@@ -5,6 +5,7 @@
  */
 package com.ves;
 
+import com.ves.Models.MemorySessionProvider;
 import com.ves.config.NullConfigProvider;
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -19,7 +20,8 @@ public class ApplicationConfig extends Application {
     public ApplicationConfig() //@Context ServletContext servletContext) {
     {
         AppDomain.Initialize( "VES web service",
-                                new NullConfigProvider());        
+                                new NullConfigProvider(),
+                                new MemorySessionProvider());        
     }
             
     @Override

@@ -1,12 +1,31 @@
 package com.ves;
 
-import com.ves.config.DirectConfigProvider;
+import com.ves.Models.ISessionProvider;
 import com.ves.config.IConfigProvider;
 
 public final class AppDomain
 {
     private static String appDomainID;
     private static IConfigProvider configProvider;
+    private static ISessionProvider sessionProvider;
+
+    /**
+     * Return the interface to manage sessions
+     * 
+     * @return 
+     */
+    public static ISessionProvider getSessionProvider() {
+        return sessionProvider;
+    }
+
+    /**
+     * Set the provider to manage session
+     * 
+     * @param sessionProvider 
+     */
+    public static void setSessionProvider(ISessionProvider sessionProvider) {
+        AppDomain.sessionProvider = sessionProvider;
+    }
     
     /**
      * Return the interface of the config providers
@@ -19,10 +38,10 @@ public final class AppDomain
     
     /**
      * Set the domain config provider
-     * @param _configProvider 
+     * @param configProvider 
      */
-    public static void setConfigProvider(IConfigProvider _configProvider) {
-        configProvider = _configProvider;
+    public static void setConfigProvider(IConfigProvider configProvider) {
+        AppDomain.configProvider = configProvider;
     }
     
     /**
@@ -34,9 +53,12 @@ public final class AppDomain
         return appDomainID;
     }
     
-    public static void Initialize( String _appDomainID, IConfigProvider _configProvider ) {
-        appDomainID = _appDomainID;
-        configProvider = _configProvider;
+    public static void Initialize( String appDomainID,
+                                    IConfigProvider configProvider,
+                                    ISessionProvider sessionProvider ) {
+        AppDomain.appDomainID = appDomainID;
+        setConfigProvider(configProvider);
+        setSessionProvider(sessionProvider);
     }
 
     

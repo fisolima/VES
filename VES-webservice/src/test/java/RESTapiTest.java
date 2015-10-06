@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 import com.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
 import com.justinsb.etcd.EtcdClientException;
+import com.ves.Models.MemorySessionProvider;
+import com.ves.Models.Session;
+import com.ves.helpers.JsonSerialization;
 import com.ves.restapi.Sessions;
 import java.net.URI;
 import java.util.Set;
@@ -47,7 +50,7 @@ public class RESTapiTest extends JerseyTest
         etcdClient.set("VESStorageTest", "storage");
         etcdClient.set("VESDatabaseTest", "database");
         
-        AppDomain.Initialize("VES Test Webservice", new NullConfigProvider());
+        AppDomain.Initialize("VES Test Webservice", new NullConfigProvider(), new MemorySessionProvider());
     }
     
     @After
@@ -117,6 +120,50 @@ public class RESTapiTest extends JerseyTest
         Response res = target("sessions").request().get();
         
         assertEquals( 200, res.getStatus());
-        assertEquals("[]", res.readEntity(String.class));
+    }
+    
+    @Test
+    public void Sessions_Should_Return_Not_Empty_List()
+    {
+        for ( int i=0; i<5; i++)
+            AppDomain.getSessionProvider().Create();
+        
+        Response res = target("sessions").request().get();
+        
+        Session[] sessions = res.readEntity(Session[].class);
+        
+        assertEquals( 200, res.getStatus());
+        assertNotSame( 0, sessions.length );
+    }
+    
+    @Test
+    public void Sessions_Can_Create_New_Session()
+    {
+        Response res = target("sessions").request().post(null);
+                
+        assertEquals( 201, res.getStatus() );
+    }
+    
+    @Test
+    public void SessionProvider_Can_Query_Existsing_Session()
+    {
+        Session originalSession = AppDomain.getSessionProvider().Create();
+        
+        Session returnedSession = AppDomain.getSessionProvider().Get(originalSession.getId());
+                
+        assertEquals(originalSession.getId(), returnedSession.getId());
+    }
+    
+    @Test
+    public void Sessions_Query_A_Session()
+    {
+        Session originalSession = AppDomain.getSessionProvider().Create();
+        
+        Response res = target("sessions/" + originalSession.getId()).request().get();
+        
+        Session session = res.readEntity(Session.class);
+        
+        assertEquals(200, res.getStatus());
+        assertEquals(originalSession.getId(), session.getId());
     }
 }

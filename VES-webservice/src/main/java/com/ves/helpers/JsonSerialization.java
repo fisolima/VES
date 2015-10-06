@@ -37,4 +37,16 @@ public class JsonSerialization {
         
         return gson.fromJson(json,clazz);
     }
+    
+    /**
+     * Convert the given object in a json string
+     * @param obj object to convert
+     * @return the json string serialazed
+     */
+    public static String toJson( Object obj ) 
+    {
+        Gson gson = new Gson();
+        
+        return gson.toJson(obj);
+    }
 }

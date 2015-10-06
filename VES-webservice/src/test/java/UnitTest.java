@@ -38,9 +38,7 @@ public class UnitTest {
     
     @Test
     public void JsonHelper_ParseObject()
-    {       
-        
-        
+    {   
         TestClass obj = JsonSerialization.<TestClass>ParseObject("{\"stringValue\":\"value\",\"intValue\":100}",TestClass.class);
         
         assertEquals("value", obj.stringValue);
