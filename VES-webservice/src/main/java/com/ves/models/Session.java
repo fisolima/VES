@@ -59,7 +59,7 @@ public class Session {
             copyResource.add( res.clone() );
         }
                 
-        return resources;
+        return copyResource;
     }
     
     /**
