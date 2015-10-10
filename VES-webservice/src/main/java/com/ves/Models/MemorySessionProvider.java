@@ -41,7 +41,7 @@ public class MemorySessionProvider implements ISessionProvider {
 
     @Override
     public void Delete(String sessionId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sessions.remove(sessionId);
     }
     
 }

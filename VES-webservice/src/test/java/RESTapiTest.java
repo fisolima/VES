@@ -12,6 +12,7 @@ import com.ves.Models.Session;
 import com.ves.helpers.JsonSerialization;
 import com.ves.restapi.Sessions;
 import java.net.URI;
+import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -21,12 +22,17 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 
 public class RESTapiTest extends JerseyTest
 {
     private final String etcdAddress = "http://127.0.0.1:2379";
 
+    @Rule
+    public TemporaryFolder testStoragePath = new TemporaryFolder();
+    
     @Override
     protected Application configure()
     {
@@ -141,7 +147,10 @@ public class RESTapiTest extends JerseyTest
     {
         Response res = target("sessions").request().post(null);
                 
+        Map<String,String> responseJson = JsonSerialization.Parse(res.readEntity(String.class));
+                
         assertEquals( 201, res.getStatus() );
+        assertNotNull(responseJson.get("location"));
     }
     
     @Test
@@ -165,5 +174,18 @@ public class RESTapiTest extends JerseyTest
         
         assertEquals(200, res.getStatus());
         assertEquals(originalSession.getId(), session.getId());
+    }
+    
+    @Test
+    public void Sessions_Delete_A_Session()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        Response res = target("sessions/" + session.getId()).request().delete();
+        
+        session = AppDomain.getSessionProvider().Get(session.getId());
+        
+        assertEquals(200, res.getStatus());
+        assertNull(session);
     }
 }
