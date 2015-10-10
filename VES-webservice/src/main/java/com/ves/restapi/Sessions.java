@@ -3,7 +3,7 @@ package com.ves.restapi;
 import com.sun.org.glassfish.gmbal.ParameterNames;
 import com.sun.xml.internal.ws.api.message.Packet;
 import com.ves.AppDomain;
-import com.ves.Models.Session;
+import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
 import java.util.Collection;
 import javax.ws.rs.DELETE;

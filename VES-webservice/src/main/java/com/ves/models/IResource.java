@@ -1,4 +1,4 @@
-package com.ves.Models;
+package com.ves.models;
 
 
 public interface IResource {

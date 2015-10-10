@@ -1,4 +1,4 @@
-package com.ves.Models;
+package com.ves.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Session {
     }
     
     /**
-     * The univoque sessionID
+     * The unique sessionID
      * @return sessionId
      */
     public String getId() {
@@ -68,5 +68,28 @@ public class Session {
      */
     public void addResource(IResource resource) {
         resources.add(resource);
+        
+        Boolean videoReady = false;
+        Boolean resourceReady = false;
+        
+        for (IResource res : resources) {
+            switch (res.getType())
+            {
+                case VIDEO:
+                    videoReady = true;
+                    break;
+                    
+                case SUBTITLE:
+                case RESIZE:
+                    resourceReady = true;
+                    break;
+                    
+                case UNDEFINED:
+                    throw new UnsupportedOperationException("Unidentified resource");
+            }
+        }
+        
+        if (videoReady && resourceReady)
+            status = Status.READY;
     }
 }

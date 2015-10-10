@@ -5,7 +5,7 @@
  */
 package com.ves;
 
-import com.ves.Models.MemorySessionProvider;
+import com.ves.models.MemorySessionProvider;
 import com.ves.config.NullConfigProvider;
 import java.util.Set;
 import javax.ws.rs.core.Application;

@@ -1,6 +1,6 @@
 package com.ves;
 
-import com.ves.Models.ISessionProvider;
+import com.ves.models.ISessionProvider;
 import com.ves.config.IConfigProvider;
 
 public final class AppDomain

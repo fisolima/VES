@@ -5,13 +5,13 @@
  */
 
 import com.ves.AppDomain;
-import com.ves.Models.IResource;
-import com.ves.Models.MemorySessionProvider;
-import com.ves.Models.ResizeResource;
-import com.ves.Models.ResourceType;
-import com.ves.Models.Session;
-import com.ves.Models.SubtitlesResource;
-import com.ves.Models.VideoResource;
+import com.ves.models.IResource;
+import com.ves.models.MemorySessionProvider;
+import com.ves.models.ResizeResource;
+import com.ves.models.ResourceType;
+import com.ves.models.Session;
+import com.ves.models.SubtitlesResource;
+import com.ves.models.VideoResource;
 import com.ves.VESException;
 import com.ves.config.DirectConfigProvider;
 import org.junit.After;
@@ -65,6 +65,7 @@ public class SessionsTest {
         
         assertEquals(ResourceType.RESIZE, res.getType());
         assertEquals("50;50", res.getValue());
+        assertEquals(Session.Status.WAITING, session.getStatus());
     }
     
     @Test
@@ -78,6 +79,7 @@ public class SessionsTest {
         
         assertEquals(ResourceType.VIDEO, res.getType());
         assertEquals("file", res.getValue());
+        assertEquals(Session.Status.WAITING, session.getStatus());
     }
     
     @Test
@@ -91,5 +93,28 @@ public class SessionsTest {
         
         assertEquals(ResourceType.SUBTITLE, res.getType());
         assertEquals("file", res.getValue());
+        assertEquals(Session.Status.WAITING, session.getStatus());
+    }
+    
+    @Test
+    public void Session_Must_Be_Ready_With_Video_And_Resize()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        session.addResource( new VideoResource( "file" ));
+        session.addResource( new ResizeResource( 50, 50));
+        
+        assertEquals(Session.Status.READY, session.getStatus());
+    }
+    
+    @Test
+    public void Session_Must_Be_Ready_With_Video_And_Subtitles()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        session.addResource( new SubtitlesResource( "file" ));
+        session.addResource( new VideoResource( "file" ));
+        
+        assertEquals(Session.Status.READY, session.getStatus());
     }
 }
