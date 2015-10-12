@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Multi-package class diagram">
+  <ClassDiagramComponents>
+    <Class name="ExceptionResolver" package="com.ves" visibility="public" xPosition="326.0" yPosition="238.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="toResponse" returnType="Exception" visibility="public">
+          <Argument type="Exception" name="exception"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="MemorySessionProvider" package="com.ves.models" visibility="public" xPosition="1840.0" yPosition="897.0">
+      <Fields>
+        <Field name="sessions" type="Map&lt;String, Session1&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="Create" returnType="Session1" visibility="public"/>
+        <Method name="Update" returnType="Session" visibility="public">
+          <Argument type="Session" name="session"/>
+        </Method>
+        <Method name="Get" returnType="String" visibility="public">
+          <Argument type="String" name="sessionId"/>
+        </Method>
+        <Method name="GetAll" returnType="Collection&lt;Session1&gt;" visibility="public"/>
+        <Method name="Delete" returnType="String" visibility="public">
+          <Argument type="String" name="sessionId"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="VideoResource" package="com.ves.models" visibility="public" xPosition="1150.0" yPosition="1568.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fileName"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getType" returnType="ResourceType1" visibility="public"/>
+        <Method name="clone" returnType="IResource1" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="FileResource" package="com.ves.models" visibility="public" isAbstract="true" xPosition="992.0" yPosition="1280.0">
+      <Fields>
+        <Field name="fileName" type="String" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fileName"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getType" returnType="ResourceType1" visibility="public"/>
+        <Method name="getValue" returnType="String" visibility="public"/>
+        <Method name="clone" returnType="IResource1" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="SubtitlesResource" package="com.ves.models" visibility="public" xPosition="842.0" yPosition="1566.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fileName"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getType" returnType="ResourceType1" visibility="public"/>
+        <Method name="clone" returnType="IResource1" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Session" package="com.ves.models" visibility="public" xPosition="1805.0" yPosition="1253.0">
+      <Fields>
+        <Field name="id" type="String" visibility="private"/>
+        <Field name="status" type="Status" visibility="private"/>
+        <Field name="resources" type="List&lt;IResource1&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="id"/>
+        </Constructor>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getId" returnType="String" visibility="public"/>
+        <Method name="getStatus" returnType="Status" visibility="public"/>
+        <Method name="getResources" returnType="List&lt;IResource1&gt;" visibility="public"/>
+        <Method name="addResource" returnType="IResource" visibility="public">
+          <Argument type="IResource" name="resource"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ResizeResource" package="com.ves.models" visibility="public" xPosition="1362.0" yPosition="998.0">
+      <Fields>
+        <Field name="widthPercentage" type="int" visibility="private" isFinal="true"/>
+        <Field name="heightPercentage" type="int" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="widthPercentage"/>
+          <Argument type="int" name="heightPercentage"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getType" returnType="ResourceType1" visibility="public"/>
+        <Method name="getValue" returnType="String" visibility="public"/>
+        <Method name="clone" returnType="ResizeResource1" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="NullConfigProvider" package="com.ves.config" visibility="public" xPosition="181.0" yPosition="514.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="getStoragePath" returnType="String" visibility="public"/>
+        <Method name="getDatabaseConnectionString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EtcdConfigProvider" package="com.ves.config" visibility="public" xPosition="49.0" yPosition="1146.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="storagePath"/>
+          <Argument type="String" name="databaseConnectionString"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="create" returnType="String" visibility="public" isStatic="true">
+          <Argument type="String" name="etcdEndPoint"/>
+          <Argument type="String" name="storageKey"/>
+          <Argument type="String" name="databaseKey"/>
+        </Method>
+        <Method name="getStoragePath" returnType="String" visibility="public"/>
+        <Method name="getDatabaseConnectionString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="DirectConfigProvider" package="com.ves.config" visibility="public" xPosition="65.0" yPosition="914.0">
+      <Fields>
+        <Field name="storagePath" type="String" visibility="private" isFinal="true"/>
+        <Field name="databaseConnectionString" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="storagePath"/>
+          <Argument type="String" name="databaseConnectionString"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ValidateParams" returnType="void" visibility="private"/>
+        <Method name="getStoragePath" returnType="String" visibility="public"/>
+        <Method name="getDatabaseConnectionString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="AppDomain" package="com.ves" visibility="public" isFinal="true" xPosition="716.0" yPosition="627.0">
+      <Fields>
+        <Field name="appDomainID" type="String" visibility="private" isStatic="true"/>
+        <Field name="configProvider" type="IConfigProvider1" visibility="private" isStatic="true"/>
+        <Field name="sessionProvider" type="ISessionProvider1" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getSessionProvider" returnType="ISessionProvider1" visibility="public" isStatic="true"/>
+        <Method name="setSessionProvider" returnType="ISessionProvider" visibility="public" isStatic="true">
+          <Argument type="ISessionProvider" name="sessionProvider"/>
+        </Method>
+        <Method name="getConfigProvider" returnType="IConfigProvider1" visibility="public" isStatic="true"/>
+        <Method name="setConfigProvider" returnType="IConfigProvider" visibility="public" isStatic="true">
+          <Argument type="IConfigProvider" name="configProvider"/>
+        </Method>
+        <Method name="getID" returnType="String" visibility="public" isStatic="true"/>
+        <Method name="Initialize" returnType="ISessionProvider" visibility="public" isStatic="true">
+          <Argument type="String" name="appDomainID"/>
+          <Argument type="IConfigProvider" name="configProvider"/>
+          <Argument type="ISessionProvider" name="sessionProvider"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="JsonSerialization" package="com.ves.helpers" visibility="public" xPosition="363.0" yPosition="51.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="Parse" returnType="String" visibility="public" isStatic="true">
+          <Argument type="String" name="json"/>
+        </Method>
+        <Method name="ParseObject" returnType="Class&lt;T&gt;" visibility="public" isStatic="true">
+          <Argument type="String" name="json"/>
+          <Argument type="Class&lt;T&gt;" name="clazz"/>
+        </Method>
+        <Method name="toJson" returnType="Object" visibility="public" isStatic="true">
+          <Argument type="Object" name="obj"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ApplicationConfig" package="com.ves" visibility="public" xPosition="1522.0" yPosition="238.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getClasses" returnType="Set&lt;Class&lt;?&gt;&gt;" visibility="public"/>
+        <Method name="addRestResourceClasses" returnType="Set&lt;Class&lt;?&gt;&gt;" visibility="private">
+          <Argument type="Set&lt;Class&lt;?&gt;&gt;" name="resources"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Sessions" package="com.ves.restapi" visibility="public" xPosition="671.0" yPosition="238.0">
+      <Fields>
+        <Field name="context" type="UriInfo" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getSessions" returnType="Response" visibility="public"/>
+        <Method name="createSession" returnType="Response" visibility="public"/>
+        <Method name="getSession" returnType="String" visibility="public">
+          <Argument type="String" name="id"/>
+        </Method>
+        <Method name="deleteSession" returnType="String" visibility="public">
+          <Argument type="String" name="id"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Configuration" package="com.ves.restapi" visibility="public" xPosition="910.0" yPosition="238.0">
+      <Fields>
+        <Field name="context" type="UriInfo" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setDirectConfigParams" returnType="String" visibility="public">
+          <Argument type="String" name="jsonParams"/>
+        </Method>
+        <Method name="setEtcdConfigParams" returnType="String" visibility="public">
+          <Argument type="String" name="jsonParams"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Main" package="com.ves.restapi" visibility="public" xPosition="1281.0" yPosition="238.0">
+      <Fields>
+        <Field name="context" type="UriInfo" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getJson" returnType="Response" visibility="public"/>
+        <Method name="putJson" returnType="String" visibility="public">
+          <Argument type="String" name="content"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="VESException" package="com.ves" visibility="public" xPosition="25.0" yPosition="246.0">
+      <Fields>
+        <Field name="status" type="int" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="status"/>
+          <Argument type="String" name="msg"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getStatus" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Interface name="ISessionProvider" package="com.ves.models" visibility="public" xPosition="1820.0" yPosition="671.0">
+      <Methods>
+        <Method name="Create" returnType="Session1" visibility="public"/>
+        <Method name="Update" returnType="Session" visibility="public">
+          <Argument type="Session" name="session"/>
+        </Method>
+        <Method name="Get" returnType="String" visibility="public">
+          <Argument type="String" name="sessionId"/>
+        </Method>
+        <Method name="GetAll" returnType="Collection&lt;Session1&gt;" visibility="public"/>
+        <Method name="Delete" returnType="String" visibility="public">
+          <Argument type="String" name="sessionId"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Interface name="IResource" package="com.ves.models" visibility="public" xPosition="1469.0" yPosition="1306.0">
+      <Methods>
+        <Method name="getType" returnType="ResourceType1" visibility="public"/>
+        <Method name="getValue" returnType="String" visibility="public"/>
+        <Method name="clone" returnType="IResource1" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Interface name="IConfigProvider" package="com.ves.config" visibility="public" xPosition="181.0" yPosition="697.0">
+      <Methods>
+        <Method name="getStoragePath" returnType="String" visibility="public"/>
+        <Method name="getDatabaseConnectionString" returnType="String" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Enum name="ResourceType" package="com.ves.models" visibility="public" xPosition="1487.0" yPosition="1566.0">
+      <Literals>
+        <Literal name="UNDEFINED"/>
+        <Literal name="VIDEO"/>
+        <Literal name="RESIZE"/>
+        <Literal name="SUBTITLE"/>
+      </Literals>
+    </Enum>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="com.ves.models.MemorySessionProvider" target="com.ves.models.ISessionProvider"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="com.ves.models.ResizeResource" target="com.ves.models.IResource"/>
+    <UseRelation source="com.ves.models.IResource" target="com.ves.models.IResource" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="com.ves.models.SubtitlesResource" target="com.ves.models.FileResource"/>
+    <UseRelation source="com.ves.config.EtcdConfigProvider" target="com.ves.config.EtcdConfigProvider" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="sessionProvider" source="com.ves.AppDomain" target="com.ves.models.ISessionProvider" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.ves.models.IResource" target="com.ves.models.ResourceType" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="sessions" source="com.ves.models.MemorySessionProvider" target="com.ves.models.Session" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map&lt;String, Session&gt;"/>
+    <HasRelation name="configProvider" source="com.ves.AppDomain" target="com.ves.config.IConfigProvider" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="com.ves.config.EtcdConfigProvider" target="com.ves.config.DirectConfigProvider"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="com.ves.config.DirectConfigProvider" target="com.ves.config.IConfigProvider"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="com.ves.config.NullConfigProvider" target="com.ves.config.IConfigProvider"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="com.ves.models.FileResource" target="com.ves.models.IResource"/>
+    <IsRelation name="is" source="com.ves.models.VideoResource" target="com.ves.models.FileResource"/>
+    <HasRelation name="resources" source="com.ves.models.Session" target="com.ves.models.IResource" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;IResource&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
