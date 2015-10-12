@@ -23,5 +23,9 @@ public abstract class FileResource implements IResource {
     public IResource clone() {
         throw new UnsupportedOperationException( "Not implemented");
     }
-    
+ 
+    @Override
+    public Boolean isUnique() {
+        return false;
+    }            
 }

@@ -10,6 +10,9 @@ import com.justinsb.etcd.EtcdClientException;
 import com.ves.models.MemorySessionProvider;
 import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
+import com.ves.models.IResource;
+import com.ves.models.ResizeResource;
+import com.ves.models.ResourceType;
 import com.ves.restapi.Sessions;
 import java.net.URI;
 import java.util.Map;
@@ -187,5 +190,22 @@ public class RESTapiTest extends JerseyTest
         
         assertEquals(200, res.getStatus());
         assertNull(session);
+    }
+    
+    @Test
+    public void Sessions_Can_Put_A_Resize_Resource()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        Response res = target("sessions/" + session.getId() + "/resize").request().post(Entity.entity("{widthPercentage:50,heightPercentage:50}",MediaType.APPLICATION_JSON));
+        
+        Response resSession = target("sessions/" + session.getId()).request().get();
+        
+        session = resSession.readEntity(Session.class);
+        
+        ResizeResource sessionResizeRes = (ResizeResource) session.getResources( ResourceType.RESIZE ).get(0);
+        
+        assertEquals(201, res.getStatus());
+        assertEquals("50;50", sessionResizeRes.getValue());
     }
 }

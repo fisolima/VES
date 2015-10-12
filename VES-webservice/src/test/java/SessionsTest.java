@@ -14,6 +14,7 @@ import com.ves.models.SubtitlesResource;
 import com.ves.models.VideoResource;
 import com.ves.VESException;
 import com.ves.config.DirectConfigProvider;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -116,5 +117,36 @@ public class SessionsTest {
         session.addResource( new VideoResource( "file" ));
         
         assertEquals(Session.Status.READY, session.getStatus());
+    }
+    
+    @Test
+    public void Session_Resize_Resource_Must_Be_Unique()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        session.addResource( new ResizeResource( 50, 50));
+        session.addResource( new ResizeResource( 50, 50));
+        session.addResource( new ResizeResource( 50, 50));
+        
+        List<IResource> resList = session.getResources(ResourceType.RESIZE);
+        
+        assertEquals(1, resList.size());
+    }
+    
+    @Test
+    public void Session_Video_Resource_Must_Be_Unique()
+    {
+        Session session = AppDomain.getSessionProvider().Create();
+        
+        session.addResource( new VideoResource( "file"));
+        session.addResource( new ResizeResource( 50, 50));
+        session.addResource( new VideoResource( "newfile"));
+        
+        List<IResource> resList = session.getResources(ResourceType.RESIZE);
+        List<IResource> vidList = session.getResources(ResourceType.VIDEO);
+        
+        assertEquals(1, resList.size());
+        assertEquals(1, vidList.size());
+        assertEquals("newfile", vidList.get(0).getValue());
     }
 }

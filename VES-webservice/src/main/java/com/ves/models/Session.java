@@ -1,9 +1,9 @@
 package com.ves.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import jdk.nashorn.internal.objects.NativeArray;
 
 /**
  * Define the POJO object represent the video editing session
@@ -49,7 +49,7 @@ public class Session {
     }
     
     /**
-     * A copy of all the resource assigned to the session
+     * A copy of all resources assigned to the session
      * @return resource list
      */
     public List<IResource> getResources() {
@@ -63,10 +63,38 @@ public class Session {
     }
     
     /**
+     * A copy of all resources assigned to the session of that kind
+     * @param type type of the resource
+     * @return resource list
+     */
+    public List<IResource> getResources( ResourceType type) {
+        ArrayList<IResource> copyResource = new ArrayList<>();
+        
+        for( IResource res : resources ) {
+            if (res.getType() == type)
+                copyResource.add( res.clone() );
+        }
+                
+        return copyResource;
+    }
+    
+    /**
      * Add a resource in the session
      * @param resource The instance of a resource to add
      */
     public void addResource(IResource resource) {
+        
+        // remove conflicting resource
+        Iterator<IResource> resourceIterator = resources.iterator();
+        
+        while (resourceIterator.hasNext()) {
+            IResource currentRes = resourceIterator.next();
+            
+            if (resource.getType() == currentRes.getType() && resource.isUnique()) {
+                resourceIterator.remove();
+            }                
+        }
+        
         resources.add(resource);
         
         Boolean videoReady = false;

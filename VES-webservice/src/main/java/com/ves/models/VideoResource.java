@@ -15,5 +15,9 @@ public class VideoResource extends FileResource {
     public IResource clone() {
         return new VideoResource( fileName );
     }
-    
+ 
+    @Override
+    public Boolean isUnique() {
+        return true;
+    }
 }

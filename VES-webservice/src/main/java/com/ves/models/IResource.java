@@ -8,4 +8,6 @@ public interface IResource {
     public String getValue();
     
     public IResource clone();
+    
+    public Boolean isUnique();
 }

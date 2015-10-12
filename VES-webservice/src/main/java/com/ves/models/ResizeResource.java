@@ -24,4 +24,9 @@ public class ResizeResource implements IResource {
     public ResizeResource clone() {
         return new ResizeResource( widthPercentage, heightPercentage);
     }
+    
+    @Override
+    public Boolean isUnique() {
+        return true;
+    }
 }
