@@ -15,6 +15,7 @@ import com.ves.models.ResizeResource;
 import com.ves.models.ResourceType;
 import com.ves.restapi.Sessions;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.client.Entity;
@@ -139,7 +140,7 @@ public class RESTapiTest extends JerseyTest
         
         Response res = target("sessions").request().get();
         
-        Session[] sessions = res.readEntity(Session[].class);
+        Session[] sessions = JsonSerialization.ParseSessions(res.readEntity(String.class));//res.readEntity(Session[].class);
         
         assertEquals( 200, res.getStatus());
         assertNotSame( 0, sessions.length );
@@ -173,7 +174,7 @@ public class RESTapiTest extends JerseyTest
         
         Response res = target("sessions/" + originalSession.getId()).request().get();
         
-        Session session = res.readEntity(Session.class);
+        Session session = JsonSerialization.ParseSession(res.readEntity(String.class));
         
         assertEquals(200, res.getStatus());
         assertEquals(originalSession.getId(), session.getId());
@@ -197,15 +198,20 @@ public class RESTapiTest extends JerseyTest
     {
         Session session = AppDomain.getSessionProvider().Create();
         
-        Response res = target("sessions/" + session.getId() + "/resize").request().post(Entity.entity("{widthPercentage:50,heightPercentage:50}",MediaType.APPLICATION_JSON));
+        Response res = target("sessions/" + session.getId() + "/resize")
+                        .request()
+                        .post( Entity.entity("{widthPercentage:\"50\",heightPercentage:\"60\"}",MediaType.APPLICATION_JSON) );
         
         Response resSession = target("sessions/" + session.getId()).request().get();
         
-        session = resSession.readEntity(Session.class);
+        String sessionJSON = resSession.readEntity(String.class);
         
-        ResizeResource sessionResizeRes = (ResizeResource) session.getResources( ResourceType.RESIZE ).get(0);
+        session = JsonSerialization.ParseSession(sessionJSON);
+        
+        List<IResource> sessionResList = session.getResources( ResourceType.RESIZE );
         
         assertEquals(201, res.getStatus());
-        assertEquals("50;50", sessionResizeRes.getValue());
+        assertNotSame(0, sessionResList.size());
+        assertEquals("50;60", ((ResizeResource)sessionResList.get(0)).getValue());
     }
 }

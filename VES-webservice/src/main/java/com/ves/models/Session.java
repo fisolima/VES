@@ -1,30 +1,47 @@
 package com.ves.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Define the POJO object represent the video editing session
+ * Define the object represent the video editing session
  */
 public class Session {
 
     public enum Status
     {
-        WAITING,
-        READY,
-        PROCESSING,
-        INTERRUPTED
+        WAITING(1),
+        READY(2),
+        PROCESSING(3),
+        INTERRUPTED(4);
+        
+        private final int value;
+        
+        private Status(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }    
     
     private String id;
     private Status status;
+    private int progress;    
+    private String progressDescription;
+    private Date progressLastModify;
     private List<IResource> resources;
         
     public Session( String id ) {
         this.id = id;
         status = Status.WAITING;
+        progress = 0;
+        progressDescription = "";
+        progressLastModify = new Date();
         resources = new ArrayList<>();
     }
     
@@ -46,6 +63,64 @@ public class Session {
      */
     public Status getStatus() {
         return status;
+    }
+    
+    /**
+     * Set the current session status
+     * @param status 
+     */
+    public void setStatus( Status status ) {
+        this.status = status;
+    }
+    
+    /**
+     * Return the percentage of completion
+     * @return 
+     */
+    public int getProgress() {
+        return progress;
+    }
+
+    /**
+     * Set the percentage of completion
+     * @param progress 
+     */
+    public void setProgress(int progress) {
+        progressLastModify = new Date();
+        
+        this.progress = progress;
+    }
+    
+    /**
+     * Return the last modified applied on the current burning session
+     * @return 
+     */
+    public Date getProgressLastModify() {
+        return progressLastModify;
+    }
+    
+    /**
+     * Set the registered last modify timestamp
+     * @param date 
+     */
+    public void setProgressLastModify( Date date ) {
+        this.progressLastModify = date;
+    }
+
+    /**
+     * Get an extended status of the completion
+     * @return 
+     */
+    public String getProgressDescription() {
+        return progressDescription;
+    }
+
+    /**
+     * Set an extended status of the completion
+     * @param progressDescription 
+     */
+    public void setProgressDescription(String progressDescription) {
+        this.progressDescription = progressDescription;
     }
     
     /**

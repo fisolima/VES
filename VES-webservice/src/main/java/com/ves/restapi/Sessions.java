@@ -1,11 +1,16 @@
 package com.ves.restapi;
 
-import com.sun.org.glassfish.gmbal.ParameterNames;
-import com.sun.xml.internal.ws.api.message.Packet;
 import com.ves.AppDomain;
+import com.ves.VESException;
 import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
+import com.ves.models.ResizeResource;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.Map;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +36,7 @@ public class Sessions {
     public Response getSessions() {        
         Collection<Session> sessions = AppDomain.getSessionProvider().GetAll();
         
-        return Response.status(Response.Status.OK).entity( JsonSerialization.toJson(sessions) ).build();
+        return Response.status(Response.Status.OK).entity( JsonSerialization.sessionsToJson(sessions) ).build();
     }
     
     @POST
@@ -47,7 +52,7 @@ public class Sessions {
     public Response getSession(@PathParam("id") String id) {        
         Session session = AppDomain.getSessionProvider().Get(id);
         
-        return Response.status(Response.Status.OK).entity( JsonSerialization.toJson(session) ).build();
+        return Response.status(Response.Status.OK).entity( JsonSerialization.sessionToJson(session) ).build();
     }
      
     @DELETE
@@ -56,6 +61,35 @@ public class Sessions {
         AppDomain.getSessionProvider().Delete(id);
         
         return Response.status(Response.Status.OK).build();
+    }
+    
+    @POST
+    @Path("/{id}/resize")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setSessionResize(@PathParam("id") String id,InputStream inputStream ) throws VESException {
+        Session session = AppDomain.getSessionProvider().Get(id);
+                
+        Map<String,String> bodyParams;
+        
+        try
+        {
+            bodyParams = JsonSerialization.Parse( inputStream );
+        }
+        catch (Exception e) {
+            throw new VESException(Response.Status.BAD_REQUEST.getStatusCode(), "Invalid format request");
+        }
+        
+        // verify parameters sintax
+        if (!bodyParams.containsKey("widthPercentage") || !bodyParams.containsKey("heightPercentage")) {
+            throw new VESException(Response.Status.BAD_REQUEST.getStatusCode(), "Invalid format request");
+        }
+        
+        int widthValue = Integer.parseInt(bodyParams.get("widthPercentage"));
+        int heightValue = Integer.parseInt(bodyParams.get("heightPercentage"));
+        
+        session.addResource( new ResizeResource( widthValue, heightValue ) );
+                
+        return Response.status(Response.Status.CREATED).build();
     }
     
 /*

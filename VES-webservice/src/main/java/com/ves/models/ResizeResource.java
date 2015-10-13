@@ -29,4 +29,12 @@ public class ResizeResource implements IResource {
     public Boolean isUnique() {
         return true;
     }
+    
+    public int getWidthPercentage() {
+        return widthPercentage;
+    }
+    
+    public int getHeightPercentage() {
+        return heightPercentage;
+    }
 }
