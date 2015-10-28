@@ -16,7 +16,8 @@ public class Session {
         WAITING(1),
         READY(2),
         PROCESSING(3),
-        INTERRUPTED(4);
+        INTERRUPTED(4),
+        COMPLETED(5);
         
         private final int value;
         

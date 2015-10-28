@@ -2,12 +2,14 @@ package com.ves;
 
 import com.ves.models.ISessionProvider;
 import com.ves.config.IConfigProvider;
+import com.ves.process.ProcessProvider;
 
 public final class AppDomain
 {
     private static String appDomainID;
     private static IConfigProvider configProvider;
     private static ISessionProvider sessionProvider;
+    private static ProcessProvider processProvider;
 
     /**
      * Return the interface to manage sessions
@@ -23,7 +25,7 @@ public final class AppDomain
      * 
      * @param sessionProvider 
      */
-    public static void setSessionProvider(ISessionProvider sessionProvider) {
+    public static synchronized void setSessionProvider(ISessionProvider sessionProvider) {
         AppDomain.sessionProvider = sessionProvider;
     }
     
@@ -40,8 +42,16 @@ public final class AppDomain
      * Set the domain config provider
      * @param configProvider 
      */
-    public static void setConfigProvider(IConfigProvider configProvider) {
+    public static synchronized void setConfigProvider(IConfigProvider configProvider) {
         AppDomain.configProvider = configProvider;
+    }
+    
+    public static ProcessProvider getProcessProvider() {
+        return processProvider;
+    }
+
+    public static synchronized void setProcessProvider(ProcessProvider processProvider) {
+        AppDomain.processProvider = processProvider;
     }
     
     /**
@@ -55,10 +65,12 @@ public final class AppDomain
     
     public static void Initialize( String appDomainID,
                                     IConfigProvider configProvider,
-                                    ISessionProvider sessionProvider ) {
+                                    ISessionProvider sessionProvider,
+                                    ProcessProvider processProvider ) {
         AppDomain.appDomainID = appDomainID;
         setConfigProvider(configProvider);
         setSessionProvider(sessionProvider);
+        setProcessProvider(processProvider);
     }
 
     

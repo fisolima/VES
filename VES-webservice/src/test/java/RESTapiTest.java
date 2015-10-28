@@ -60,7 +60,10 @@ public class RESTapiTest extends JerseyTest
         etcdClient.set("VESStorageTest", "storage");
         etcdClient.set("VESDatabaseTest", "database");
         
-        AppDomain.Initialize("VES Test Webservice", new NullConfigProvider(), new MemorySessionProvider());
+        AppDomain.Initialize("VES Test Webservice",
+                                new NullConfigProvider(),
+                                new MemorySessionProvider(),
+                                new MockProcessProvider());
     }
     
     @After

@@ -38,7 +38,8 @@ public class SessionsTest {
     public void setUp() throws VESException {
         AppDomain.Initialize( "VES Test Webservice",
                             new DirectConfigProvider( testStoragePath.getRoot().toString(), "database" ),
-                            new MemorySessionProvider());
+                            new MemorySessionProvider(),
+                            new MockProcessProvider());
     }
     
     @After
