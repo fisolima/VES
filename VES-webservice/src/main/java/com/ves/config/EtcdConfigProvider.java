@@ -2,6 +2,7 @@ package com.ves.config;
 
 import com.ves.VESException;
 import com.justinsb.etcd.EtcdClient;
+import com.justinsb.etcd.EtcdClientException;
 import com.justinsb.etcd.EtcdResult;
 import java.net.URI;
 
@@ -13,9 +14,15 @@ public class EtcdConfigProvider extends DirectConfigProvider{
             EtcdClient etcdClient = new EtcdClient(URI.create(etcdEndPoint));
             
             EtcdResult res = etcdClient.get(storageKey);
+            if (res == null)
+                throw new Exception("Missing storage key in Etcd");
+            
             String storagePath = res.node.value;
             
             res = etcdClient.get(databaseKey);
+            if (res == null)
+                throw new Exception("Missing database key in Etcd");
+            
             String databaseConnectionString = res.node.value;            
             
             return new EtcdConfigProvider(storagePath, databaseConnectionString);
