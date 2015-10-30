@@ -88,7 +88,7 @@ public class RESTapiTest extends JerseyTest
     {
         String value = "{storage:\"storage\",database:\"database\"}";
           
-        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.TEXT_PLAIN) );
+        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
         
         assertEquals(200, res.getStatus());
         assertEquals("storage",AppDomain.getConfigProvider().getStoragePath());
@@ -100,7 +100,17 @@ public class RESTapiTest extends JerseyTest
     {
         String value = "{abc:\"storage\",database:\"database\"}";
           
-        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.TEXT_PLAIN) );
+        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
+        
+        assertEquals(400, res.getStatus());
+    }
+    
+    @Test
+    public void Direct_Config_Declare_Should_Fail_On_Empty_Data() throws VESException
+    {
+        String value = "{storage:\"storage\",database:\"\"}";
+          
+        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
         
         assertEquals(400, res.getStatus());
     }
@@ -110,7 +120,7 @@ public class RESTapiTest extends JerseyTest
     {
         String value = "{storageKey:\"VESStorageTest\",databaseKey:\"VESDatabaseTest\",etcdEndPoint:\"" + etcdAddress + "\"}";
           
-        Response res = target("cfg/etcd").request().put( Entity.entity(value, MediaType.TEXT_PLAIN) );
+        Response res = target("cfg/etcd").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
         
         assertEquals(200, res.getStatus());
         assertEquals("storage",AppDomain.getConfigProvider().getStoragePath());
@@ -122,7 +132,7 @@ public class RESTapiTest extends JerseyTest
     {
         String value = "zge4zhxrtddth";
           
-        Response res = target("cfg/etcd").request().put( Entity.entity(value, MediaType.TEXT_PLAIN) );
+        Response res = target("cfg/etcd").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
         
         assertEquals(400, res.getStatus());
     }
