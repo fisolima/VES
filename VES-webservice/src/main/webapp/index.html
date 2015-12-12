@@ -1,148 +1,63 @@
 <!DOCTYPE html>
-<html >
+<html ng-app="mainApp" ng-controller="mainController">
     <head>
-        <title>VES</title>
+        <title>{{::appTitle}}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="style/bootstrap.min.css">
         <style>
-            body{
-                border-left-width: 5px;
-                padding-left: 25px;
-                padding-right: 25px;
-                padding-top: 10px;
+            body {
+                padding-left: 15px;
+                padding-right: 15px;
             }
             
-            input[name=cfgText] {
-                float: right;
-                width: 210px;
-            }
-            input[name=cfgBtn] {
-                float: right;
-                width: 80px;
+            .vertical-center {
+                height:100%;
+                width:100%;
+                text-align: center;
             }
         </style>
     </head>
-    <body ng-app="vesApp">
-        <div ng-controller="mainController">
-            <h1 class="navbar">{{Title}}</h1>
-            
-            <div class="panel panel-primary" name="configPanel" ng-controller="configController">
-                <div class="panel-heading" ><h2>Configuration</h2></div>
-                <div class="row">
-                    <div class="col-sm-2" name="configPanelManual">
-                        <h3>Manual setup</h3>
-                        <div>Storage<input type="text" name="cfgText" placeholder="Insert the absolute storage path" ng-model="direct.storage"/></div><br>
-                        <div>Database<input type="text" name="cfgText"  placeholder="Insert the database connection string" ng-model="direct.database"/></div><br>
-                        <input type="button" value="Apply" name="cfgBtn" ng-click="ApplyDirect()"/>
+    <body>
+        <div>
+            <h2 class="jumbotron vertical-center">{{::appTitle}}</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div ng-if="config.available">
+                        <span>{{config.data.configType}}</span><br>
+                        <span>{{config.data.storageStatus}}</span><br>
+                        <span>{{config.data.databaseStatus}}</span>
                     </div>
-                    <div class="col-sm-2" name="configPanelEtcd">
-                        <h3>Etcd setup</h3>
-                        <div>Etcd address<input type="text" name="cfgText" placeholder="Insert the etcd server address" ng-model="etcd.etcdEndPoint"/></div><br>
-                        <div>Storage Key<input type="text" name="cfgText" placeholder="Insert the storage key name" ng-model="etcd.storageKey"/></div><br>
-                        <div>Database Key<input type="text" name="cfgText" placeholder="Insert the database key name" ng-model="etcd.databaseKey"/></div><br>
-                        <input type="button" value="Apply" name="cfgBtn" ng-click="ApplyEtcd()"/>
+                    <div ng-if="!config.available">                
+                        <div ng-if="config.data !== undefined && config.data.configType !== 'undefined'">
+                            <span>Server Error</span><br>
+                            <span>Storage: {{config.data.storageStatus}}</span><br>
+                            <span>Database {{config.data.databaseStatus}}</span>
+                        </div>                
+                        <span ng-if="config.data.configType === 'undefined'">Server not configured yet</span>
                     </div>
                 </div>
-                <br><br>
-                <div class="alert alert-warning" role="alert" id="divServerStatus">
-                    Server not configured yet
-                </div>
-      
             </div>
+            <br>
+            <ul class="nav nav-pills">                
+                <li ng-class="{active: $route.current.activetab == 'session'}"><a href="#/session">Sessions</a></li>
+                <li ng-class="{active: $route.current.activetab == 'config'}"><a href="#/config">Configuration</a></li>
+            </ul>
+            
+            <div ng-view></div>
         
         </div>
         
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-<script>
-            
-var app = angular.module('vesApp',[]);
+        <script src="app/libs/jquery-2.1.4.min.js"></script>
+        <script src="app/libs/bootstrap.min.js"></script>
+        <script src="app/libs/angular.min.js"></script>
+        <script src="app/libs/angular-route.min.js"></script>
 
-app.controller( 'mainController', ['$scope',function($scope){
-        $scope.Title = "VES Polimi Project";
-}]);
-
-app.controller('configController',['$scope','$http',function($scope,$http){
-        $scope.direct = {storage:'',database:''};
-        $scope.etcd = {storageKey:'', databaseKey:'', etcdEndPoint:''};
-        
-        var ProcessResponse = function( status, responseData ) {
-            switch (status)
-            {
-                case 200:
-                {
-                    $('#divServerStatus').attr('class', 'alert alert-success' );
-                    $('#divServerStatus').html('Server active - config type: ' + responseData.configType );
-                } break;
-                
-                case 503:
-                {
-                    if (responseData.configType)
-                    {
-                        if (responseData.configType === 'undefined') {
-                            $('#divServerStatus').attr('class', 'alert alert-warning' );
-                            $('#divServerStatus').html('Server not configured yet');
-                        }
-                        else {
-                            $('#divServerStatus').attr('class', 'alert alert-danger' );
-                            $('#divServerStatus').html('Server inactive - storage:<b>' +
-                                                        responseData.storageStatus + '</b>, database:<b>' +
-                                                        responseData.databaseStatus + '</b>');
-                        }
-                    }
-                    else
-                    {
-                        $('#divServerStatus').attr('class', 'alert alert-danger' );
-                        $('#divServerStatus').html('Server inactive - ' + responseData );
-                    }
-                } break;
-
-                default:
-                {
-                    $('#divServerStatus').attr('class', 'alert alert-danger' );
-                    $('#divServerStatus').html('Server error: ' + status + ' - ' + responseData);
-                } break;
-            }
-        };
-        
-        $scope.CheckServerConfigStatus = function() {
-            $http({method:'GET',url:'api/cfg'}).then(
-                    function(response) {
-                        ProcessResponse( response.status, response.data );
-                    },
-                    function(response) {
-                        ProcessResponse( response.status, response.data );
-                    });
-        };
-        
-        $scope.ApplyDirect = function() {            
-            $http({method:'PUT',url:'api/cfg/direct',data:$scope.direct}).then(
-                    function(response) {
-                        $scope.CheckServerConfigStatus();
-                    },
-                    function(response) {
-                        console.log(response);
-                        ProcessResponse( response.status, response.data );
-                    });
-        };
-        
-        $scope.ApplyEtcd = function() {
-            $http({method:'PUT',url:'api/cfg/etcd',data:$scope.etcd}).then(
-                    function(response) {
-                        $scope.CheckServerConfigStatus();
-                    },
-                    function(response) {
-                        console.log(response);
-                        ProcessResponse( response.status, response.data );
-                    });
-        };
-        
-        //$scope.$on('$viewContentLoaded', $scope.CheckServerConfigStatus );
-        angular.element(document).ready( $scope.CheckServerConfigStatus );
-}]);
-
-        </script>
-        
+        <script src="app/modules/mainApp.js"></script>
+        <script src="app/services/configService.js"></script>
+        <script src="app/services/sessionService.js"></script>
+        <script src="app/controllers/mainController.js"></script>
+        <script src="app/controllers/configController.js"></script>
+        <script src="app/controllers/sessionController.js"></script>
+        <script src="app/modules/routeConfig.js"></script>
     </body>
 </html>

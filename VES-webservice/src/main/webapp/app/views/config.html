@@ -1,0 +1,55 @@
+
+<select ng-model="setupType">
+    <option value="manual">Manual setup</option>
+    <option value="etcd">Etcd setup</option>
+</select>
+
+<div class="panel panel-default" ng-if="setupType == 'manual'">
+  <div class="panel-heading">Insert the configuration parameters directly</div>
+  <div class="panel-body">
+      <span>Storage</span>
+      <input type="text"
+        name="cfgText"
+        placeholder="Insert the absolute storage path"
+        ng-model="direct.storage"/>
+      <br>
+      <span>Database</span>
+      <input type="text"
+             name="cfgText"
+             placeholder="Insert the database connection string"
+             ng-model="direct.database"/>
+      <br>
+      <span>*leave this field empty to store data in memory</span>
+      <br>
+      <input type="button" value="Apply" name="cfgBtn" ng-click="applyDirect()"/>
+  </div>
+</div>
+
+<div class="panel panel-default" ng-if="setupType == 'etcd'">
+  <div class="panel-heading">Specify the Etcd endpoint and keys to retrieve configuration parameters</div>
+  <div class="panel-body">
+      <span>Etcd address</span>
+      <input type="text" 
+             name="cfgText" 
+             placeholder="Insert the etcd server address" 
+             ng-model="etcd.etcdEndPoint"/>
+      <br>
+      <span>Storage Key</span>
+      <input type="text" 
+             name="cfgText" 
+             placeholder="Insert the storage key name" 
+             ng-model="etcd.storageKey"/>
+      <br>
+      <span>Database Key</span>
+      <input type="text"
+             name="cfgText" 
+             placeholder="Insert the database key name"
+             ng-model="etcd.databaseKey"/>
+      <br>
+      <input type="button" value="Apply" name="cfgBtn" ng-click="applyEtcd()"/>
+  </div>
+</div>
+
+<div ng-if="errorMessage.length > 0">
+    <h3 class="alert-danger">{{errorMessage}}</h3>
+</div>
