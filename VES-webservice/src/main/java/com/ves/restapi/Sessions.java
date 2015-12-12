@@ -43,7 +43,7 @@ public class Sessions {
     public Response createSession() {
          Session session = AppDomain.getSessionProvider().Create();
          
-         return Response.status(Response.Status.CREATED).entity( "{location: \'" + context.getRequestUri().toString() + "/" + session.getId() + "\'}" ).build();
+         return Response.status(Response.Status.CREATED).entity( JsonSerialization.sessionToJson(session) ).build();
      }
      
     @GET
@@ -58,6 +58,10 @@ public class Sessions {
     @DELETE
     @Path("/{id}")
     public Response deleteSession(@PathParam("id") String id) {
+        if (AppDomain.getSessionProvider().Get(id) == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("The session does not exist").build();
+        }
+        
         AppDomain.getSessionProvider().Delete(id);
         
         return Response.status(Response.Status.OK).build();

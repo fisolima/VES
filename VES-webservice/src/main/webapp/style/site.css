@@ -1,0 +1,18 @@
+body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.vertical-center {
+    height:100%;
+    width:100%;
+    text-align: center;
+}
+
+.panel-default > .panel-heading-custom {
+    background-color: #999;
+}
+
+.grey-body {
+    background-color: #ccc;
+}

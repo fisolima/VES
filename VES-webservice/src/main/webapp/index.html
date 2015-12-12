@@ -4,18 +4,7 @@
         <title>{{::appTitle}}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
         <link rel="stylesheet" href="style/bootstrap.min.css">
-        <style>
-            body {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-            
-            .vertical-center {
-                height:100%;
-                width:100%;
-                text-align: center;
-            }
-        </style>
+        <link href="style/site.css" rel="stylesheet"/>
     </head>
     <body>
         <div>
@@ -23,15 +12,15 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div ng-if="config.available">
-                        <span>{{config.data.configType}}</span><br>
-                        <span>{{config.data.storageStatus}}</span><br>
-                        <span>{{config.data.databaseStatus}}</span>
+                        <span>Configuration Type: {{config.data.configType}}</span><br>
+                        <span>Storage Status: {{config.data.storageStatus}}</span><br>
+                        <span>Database Status: {{config.data.databaseStatus}}</span>
                     </div>
                     <div ng-if="!config.available">                
                         <div ng-if="config.data !== undefined && config.data.configType !== 'undefined'">
                             <span>Server Error</span><br>
                             <span>Storage: {{config.data.storageStatus}}</span><br>
-                            <span>Database {{config.data.databaseStatus}}</span>
+                            <span>Database: {{config.data.databaseStatus}}</span>
                         </div>                
                         <span ng-if="config.data.configType === 'undefined'">Server not configured yet</span>
                     </div>
@@ -58,6 +47,7 @@
         <script src="app/controllers/mainController.js"></script>
         <script src="app/controllers/configController.js"></script>
         <script src="app/controllers/sessionController.js"></script>
+        <script src="app/directives/sessionDirective.js"></script>
         <script src="app/modules/routeConfig.js"></script>
     </body>
 </html>

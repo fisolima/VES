@@ -20,6 +20,7 @@ var configCtrl = function($scope,configService) {
     $scope.errorMessage = '';
     
     var onSuccess = function() {
+        $scope.errorMessage = '';
         $scope.$parent.checkServerStatus();  
     };
     var onError = function(error) {

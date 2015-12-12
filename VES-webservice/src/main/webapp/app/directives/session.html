@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-custom">{{session.id}}
+        <a href="#" ng-click="remove()" class="btn btn-danger btn-xs pull-right">Delete Session</a>
+    </div>
+    <div class="panel-body grey-body">        
+        <span>Last update: {{session.progressLastModify | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
+        <br>
+        <span>Status: {{status}}</span>
+    </div>
+</div>

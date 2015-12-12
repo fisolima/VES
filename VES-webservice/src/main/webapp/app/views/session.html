@@ -1,1 +1,7 @@
-<h2>List of sessions</h2>
+<h2>Session list</h2>
+<input type="button" value="Add Session" ng-click="addSession()"><br>
+<h2 class="alert-danger" ng-if="errorMessage.length > 0">{{errorMessage}}</h2><br>
+
+<div>
+    <ves-session ng-repeat="se in sessions track by se.id" session="se"></ves-session>
+</div>
