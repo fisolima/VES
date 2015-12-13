@@ -1,5 +1,6 @@
 package com.ves.models;
 
+import com.ves.VESException;
 import java.util.Collection;
 
 /**
@@ -25,6 +26,15 @@ public interface ISessionProvider {
      * @return Founded session
      */
     public Session Get( String sessionId );
+    
+    /**
+     * Retrieves the specified session's resource path.
+     * It will create the folder eventually
+     * @param sessionId
+     * @return 
+     * @throws com.ves.VESException 
+     */
+    public String GetResourcePath( String sessionId ) throws VESException;;
     
     /**
      * Return all the session stored in the repository

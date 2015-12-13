@@ -5,6 +5,7 @@ import com.ves.config.NullConfigProvider;
 import com.ves.process.FfmpegProcessProvider;
 import java.util.Set;
 import javax.ws.rs.core.Application;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 @javax.ws.rs.ApplicationPath("api")
 public class ApplicationConfig extends Application {    
@@ -20,7 +21,11 @@ public class ApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
+        
+        resources.add(MultiPartFeature.class);
+    
         addRestResourceClasses(resources);
+        
         return resources;
     }
 
@@ -34,7 +39,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.ves.ExceptionResolver.class);
         resources.add(com.ves.restapi.Configuration.class);
         resources.add(com.ves.restapi.Main.class);
-        resources.add(com.ves.restapi.Sessions.class);
+        resources.add(com.ves.restapi.Sessions.class);        
     }
     
 }

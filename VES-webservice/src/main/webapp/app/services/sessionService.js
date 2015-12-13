@@ -44,11 +44,46 @@
                 });
         };
         
+        var _uploadVideo = function(sessionId,file,onSuccess,onError) {
+            var fd = new FormData();
+            
+            fd.append("file", file);
+
+            $http.post('api/sessions/' + sessionId + '/video', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+                }).then(onSuccess,onError);
+        };
+        
+        var _uploadSubtitle = function(sessionId,file,onSuccess,onError) {
+            var fd = new FormData();
+            
+            fd.append("file", file);
+
+            $http.post('api/sessions/' + sessionId + '/subtitle', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+                }).then(onSuccess,onError);
+        };
+        
+        var _resize = function(sessionId,resizeData,onSuccess,onError) {
+            $http({
+                    method:'POST',
+                    url:'api/sessions/' + sessionId + '/resize',
+                    data: resizeData
+                }).then(onSuccess,onError);
+        };
+        
         return {
             getAll: _get,
             add: _create,
             get: _getOne,
-            del: _delete
+            del: _delete,
+            uploadVideo: _uploadVideo,
+            uploadSubtitle: _uploadSubtitle,
+            resize: _resize
         };
         
     };

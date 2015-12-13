@@ -6,6 +6,7 @@ import com.ves.helpers.JsonSerialization;
 import com.ves.config.DirectConfigProvider;
 import com.ves.config.EtcdConfigProvider;
 import com.ves.config.IConfigProvider;
+import java.io.File;
 import java.util.Map;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -38,13 +39,23 @@ public class Configuration {
         
         try
         {
-            String storagePath = configProvider.getStoragePath();
+            String storagePath =
+                    configProvider.getStoragePath();
             
-            // TODO check path permission
+            if (storagePath != null && storagePath.length() > 0) {
+                File file = new File(storagePath,"mark");
+
+                if (!file.exists()) {
+                    file.mkdirs();
+                    // TODO remove temp folder
+                    //file.delete();
+                }
+            }
         }
         catch (Exception exc)
         {
             serviceAvailable = false;
+            
             storageStatus = "Unavailable - " + exc.getMessage();
         }
         

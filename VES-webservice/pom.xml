@@ -34,8 +34,8 @@
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.22</version>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.22.1</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

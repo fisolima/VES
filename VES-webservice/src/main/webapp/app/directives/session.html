@@ -2,9 +2,36 @@
     <div class="panel-heading panel-heading-custom">{{session.id}}
         <a href="#" ng-click="remove()" class="btn btn-danger btn-xs pull-right">Delete Session</a>
     </div>
-    <div class="panel-body grey-body">        
-        <span>Last update: {{session.progressLastModify | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
-        <br>
-        <span>Status: {{status}}</span>
+    <div class="panel-body grey-body">
+        <div class="row">
+            <div class="col-md-3">
+                <span>Last update: {{session.progressLastModify | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
+                <br>
+                <span>Status: {{status}}</span>
+            </div>
+            
+            <div class="col-md-3" ng-if="videoFile.length == 0">
+                <span>Upload a video file</span>
+                <input type="file" name="file" onchange="angular.element(this).scope().uploadVideo(this.files)"/>        
+            </div>
+            <div class="col-md-3" ng-if="videoFile.length > 0">
+                <span>Video source: {{videoFile}}</span>
+            </div>
+            
+            <div class="col-md-3" ng-if="subtitleFile.length == 0">
+                <span>Upload a subtitle file</span>
+                <input type="file" name="file" onchange="angular.element(this).scope().uploadSubtitle(this.files)"/>        
+            </div>
+            <div class="col-md-3" ng-if="subtitleFile.length > 0">
+                <span>Subtitle source: {{subtitleFile}}</span>
+            </div>
+            
+            <div class="col-md-3">
+                <span>Resize the video</span><br>
+                <span>Width:</span><input type="number" ng-model="resize.widthPercentage"><br>
+                <span>Height:</span><input type="number" ng-model="resize.heightPercentage"><br>
+                <a href="#" class="btn btn-default" ng-click="resizeVideo()">Apply</a>
+            </div>
+        </div>
     </div>
 </div>
