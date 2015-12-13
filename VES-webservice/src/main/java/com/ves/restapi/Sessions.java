@@ -150,4 +150,13 @@ public class Sessions {
 
         return Response.status(200).build();
     }
+    
+    @POST
+    @Path("/{id}/burn")
+    public Response burn(@PathParam("id") String id) throws VESException {
+        
+        AppDomain.getProcessProvider().Start( AppDomain.getSessionProvider(), id);
+        
+        return Response.status(200).build();
+    }
 }

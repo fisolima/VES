@@ -7,7 +7,10 @@
             <div class="col-md-3">
                 <span>Last update: {{session.progressLastModify | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
                 <br>
-                <span>Status: {{status}}</span>
+                <span>Status: {{status}}</span><br><br>
+                <div ng-if="session.status===STATUS_COMPLETED"><a href="#" class="btn btn-success">Download</a></div> 
+                <div ng-if="session.status===STATUS_READY"><a href="#" class="btn btn-warning" ng-click="burn()">Burn Video</a></div>
+                <div ng-if="session.status===STATUS_PROCESSING"><a href="#" class="btn btn-danger">Cancel</a></div>
             </div>
             
             <div class="col-md-3" ng-if="videoFile.length == 0">

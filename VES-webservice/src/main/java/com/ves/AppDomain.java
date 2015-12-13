@@ -72,6 +72,4 @@ public final class AppDomain
         setSessionProvider(sessionProvider);
         setProcessProvider(processProvider);
     }
-
-    
 }

@@ -6,14 +6,14 @@ import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Define an in-memory session provider
  */
 public class MemorySessionProvider implements ISessionProvider {
 
+    public static final String MEMORY_PROVIDER = "__MEMORY_PROVIDER__";
+            
     private final Map<String,Session> sessions;
     
     public MemorySessionProvider () {
@@ -31,7 +31,7 @@ public class MemorySessionProvider implements ISessionProvider {
 
     @Override
     public void Update(Session session) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sessions.put(session.getId(), session);
     }
 
     @Override

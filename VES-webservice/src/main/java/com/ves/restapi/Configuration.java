@@ -6,6 +6,7 @@ import com.ves.helpers.JsonSerialization;
 import com.ves.config.DirectConfigProvider;
 import com.ves.config.EtcdConfigProvider;
 import com.ves.config.IConfigProvider;
+import com.ves.models.MemorySessionProvider;
 import java.io.File;
 import java.util.Map;
 import javax.ws.rs.core.Context;
@@ -42,7 +43,12 @@ public class Configuration {
             String storagePath =
                     configProvider.getStoragePath();
             
-            if (storagePath != null && storagePath.length() > 0) {
+            if (storagePath != null && storagePath.length() > 0) {                
+                File storageFile = new File(storagePath);
+                
+                if (!storageFile.exists())
+                    throw new Exception("Storage not found");
+                
                 File file = new File(storagePath,"mark");
 
                 if (!file.exists()) {
@@ -105,11 +111,12 @@ public class Configuration {
             databaseValue = configMap.get("database");
             
             if (storageValue == null ||
-                    storageValue.length() == 0 ||
-                    databaseValue == null ||
-                    databaseValue.length() == 0) {
+                    storageValue.length() == 0) {
                 throw new Exception();
             }
+            
+            if (databaseValue == null || databaseValue.length() == 0)
+                databaseValue = MemorySessionProvider.MEMORY_PROVIDER;
                 
         }
         catch (Exception exc) {

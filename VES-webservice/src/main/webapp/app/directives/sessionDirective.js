@@ -67,7 +67,7 @@
                     };
                     
                     var onSessionChanged = function() {
-                        $scope.$parent.resetError;
+                        $scope.$parent.resetError();
                         
                         // update
                         sessionService.get(
@@ -109,6 +109,17 @@
                                 onSessionChanged,
                                 function() {
                                     $scope.$parent.showError('Resize request failed!');
+                                });
+                    };
+                    
+                    $scope.burn = function () {
+                        sessionService.burn(
+                                $scope.session.id,
+                                function () {
+                                    
+                                },
+                                function(error) {
+                                    $scope.$parent.showError('Burn failed: ' + error);
                                 });
                     };
                 },

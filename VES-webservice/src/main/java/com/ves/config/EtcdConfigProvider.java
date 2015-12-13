@@ -2,7 +2,6 @@ package com.ves.config;
 
 import com.ves.VESException;
 import com.justinsb.etcd.EtcdClient;
-import com.justinsb.etcd.EtcdClientException;
 import com.justinsb.etcd.EtcdResult;
 import java.net.URI;
 

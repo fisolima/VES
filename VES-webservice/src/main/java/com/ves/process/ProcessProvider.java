@@ -26,7 +26,11 @@ public abstract class ProcessProvider {
         if (session.getStatus() != Session.Status.READY)
             throw new VESException(400, "Session is not in a ready status");
         
-        processes.put( session.getId(), CreateProcess(sessionProvider, session) );
+        Process proc = CreateProcess(sessionProvider, session);
+                
+        proc.Start();
+        
+        processes.put( session.getId(), proc );
     }
     
     public final void Stop( String sessionId)

@@ -76,6 +76,17 @@
                 }).then(onSuccess,onError);
         };
         
+        var _burn = function(sessionId,onSuccess,onError) {
+            $http({
+                    method:'POST',
+                    url:'api/sessions/' + sessionId + '/burn'
+                }).then(
+                        onSuccess,
+                        function (response) {                            
+                            onError(response.data);
+                        });
+        };
+        
         return {
             getAll: _get,
             add: _create,
@@ -83,7 +94,8 @@
             del: _delete,
             uploadVideo: _uploadVideo,
             uploadSubtitle: _uploadSubtitle,
-            resize: _resize
+            resize: _resize,
+            burn: _burn
         };
         
     };

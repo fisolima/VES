@@ -4,7 +4,6 @@ import com.ves.models.MemorySessionProvider;
 import com.ves.config.NullConfigProvider;
 import com.ves.models.ResizeData;
 import com.ves.process.FfmpegProcessProvider;
-import com.ves.restapi.Sessions;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 import org.glassfish.jersey.jackson.JacksonFeature;
