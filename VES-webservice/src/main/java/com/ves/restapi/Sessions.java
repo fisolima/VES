@@ -1,12 +1,17 @@
 package com.ves.restapi;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import com.ves.AppDomain;
 import com.ves.VESException;
 import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
+import com.ves.models.ResizeData;
 import com.ves.models.ResizeResource;
 import com.ves.models.SubtitlesResource;
 import com.ves.models.VideoResource;
@@ -73,50 +78,11 @@ public class Sessions {
         return Response.status(Response.Status.OK).build();
     }
     
-    public class ResizeData {
-        private double widthPercentage;
-
-        public double getWidthPercentage() {
-            return widthPercentage;
-        }
-
-        public void setWidthPercentage(double widthPercentage) {
-            this.widthPercentage = widthPercentage;
-        }
-
-        public double getHeightPercentage() {
-            return heightPercentage;
-        }
-
-        public void setHeightPercentage(double heightPercentage) {
-            this.heightPercentage = heightPercentage;
-        }
-        private double heightPercentage;
-    };
-    
     @POST
     @Path("/{id}/resize")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setSessionResize(@PathParam("id") String id, ResizeData resizeData) throws VESException {
         Session session = AppDomain.getSessionProvider().Get(id);
-                
-//        Map<String,String> bodyParams;
-//        
-//        try
-//        {
-//            bodyParams = JsonSerialization.Parse( inputStream );
-//        }
-//        catch (Exception e) {
-//            throw new VESException(Response.Status.BAD_REQUEST.getStatusCode(), "Invalid format request");
-//        }
-//        
-//        // verify parameters sintax
-//        if (!bodyParams.containsKey("widthPercentage") || !bodyParams.containsKey("heightPercentage")) {
-//            throw new VESException(Response.Status.BAD_REQUEST.getStatusCode(), "Invalid format request");
-//        }
-//        
-//        int widthValue = Integer.parseInt(bodyParams.get("widthPercentage"));
-//        int heightValue = Integer.parseInt(bodyParams.get("heightPercentage"));
         
         int widthValue = (int) resizeData.widthPercentage;
         int heightValue = (int) resizeData.heightPercentage;
