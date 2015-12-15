@@ -7,10 +7,12 @@ import static org.junit.Assert.*;
 import com.ves.config.NullConfigProvider;
 import com.justinsb.etcd.EtcdClient;
 import com.justinsb.etcd.EtcdClientException;
+import com.ves.VESJacksonProvider;
 import com.ves.models.MemorySessionProvider;
 import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
 import com.ves.models.IResource;
+import com.ves.models.ResizeData;
 import com.ves.models.ResizeResource;
 import com.ves.models.ResourceType;
 import com.ves.restapi.Sessions;
@@ -22,6 +24,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
@@ -41,6 +45,11 @@ public class RESTapiTest extends JerseyTest
     protected Application configure()
     {
         Set<Class<?>> resources = new java.util.HashSet<>();
+        
+        resources.add(MultiPartFeature.class);        
+        resources.add(JacksonFeature.class);
+        resources.add(VESJacksonProvider.class);
+        resources.add(ResizeData.class);
         
         resources.add(Main.class);
         resources.add(com.ves.ExceptionResolver.class);
@@ -106,16 +115,6 @@ public class RESTapiTest extends JerseyTest
     }
     
     @Test
-    public void Direct_Config_Declare_Should_Fail_On_Empty_Data() throws VESException
-    {
-        String value = "{storage:\"storage\",database:\"\"}";
-          
-        Response res = target("cfg/direct").request().put( Entity.entity(value, MediaType.APPLICATION_JSON) );
-        
-        assertEquals(400, res.getStatus());
-    }
-    
-    @Test
     public void Etcd_Config_Declare_Put() throws VESException
     {
         String value = "{storageKey:\"VESStorageTest\",databaseKey:\"VESDatabaseTest\",etcdEndPoint:\"" + etcdAddress + "\"}";
@@ -164,10 +163,14 @@ public class RESTapiTest extends JerseyTest
     {
         Response res = target("sessions").request().post(null);
                 
-        Map<String,String> responseJson = JsonSerialization.Parse(res.readEntity(String.class));
+        //Map<String,String> responseJson = JsonSerialization.Parse(res.readEntity(String.class));
+        
+        //Session session = res.readEntity(Session.class);
+        Session session = JsonSerialization.ParseSession(res.readEntity(String.class));
                 
         assertEquals( 201, res.getStatus() );
-        assertNotNull(responseJson.get("location"));
+        //assertNotNull(responseJson.get("location"));
+        assertNotNull(session);
     }
     
     @Test
@@ -213,7 +216,7 @@ public class RESTapiTest extends JerseyTest
         
         Response res = target("sessions/" + session.getId() + "/resize")
                         .request()
-                        .post( Entity.entity("{widthPercentage:\"50\",heightPercentage:\"60\"}",MediaType.APPLICATION_JSON) );
+                        .post( Entity.entity("{\"widthPercentage\":50,\"heightPercentage\":60}",MediaType.APPLICATION_JSON) );
         
         Response resSession = target("sessions/" + session.getId()).request().get();
         
