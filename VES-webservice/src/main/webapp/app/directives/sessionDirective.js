@@ -34,6 +34,7 @@
                     $scope.videoFile = '';
                     $scope.subtitleFile = '';
                     $scope.resize = {widthPercentage: 100, heightPercentage: 100};
+                    $scope.progressTimerId = null;
                     
                     $scope.updateStatus = function() {
                         // session status
@@ -112,11 +113,33 @@
                                 });
                     };
                     
+                    var stopProgress = function () {
+                        if ($scope.progressTimerId)
+                            clearInterval($scope.progressTimerId);
+                    };
+                    
+                    var progress = function () {
+                        sessionService.get(
+                                $scope.session.id,
+                                function (newSession) {
+                                    $scope.session = newSession;
+                                    
+                                    $scope.updateStatus();
+                                    
+                                    if ($scope.session.status !== $scope.STATUS_PROCESSING)
+                                        stopProgress();
+                                },
+                                function (error) {
+                                    $scope.$parent.showError(error);
+                                    stopProgress();
+                                });
+                    };
+                    
                     $scope.burn = function () {
                         sessionService.burn(
                                 $scope.session.id,
                                 function () {
-                                    
+                                    $scope.progressTimerId = setInterval( progress, 2000);
                                 },
                                 function(error) {
                                     $scope.$parent.showError('Burn failed: ' + error);

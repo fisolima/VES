@@ -33,7 +33,7 @@ public abstract class ProcessProvider {
         processes.put( session.getId(), proc );
     }
     
-    public final void Stop( String sessionId)
+    public final void Stop(String sessionId) throws VESException
     {
         Process process = processes.get(sessionId);
         
