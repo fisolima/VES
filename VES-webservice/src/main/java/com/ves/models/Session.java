@@ -62,7 +62,7 @@ public class Session {
      * The current session status
      * @return session status
      */
-    public Status getStatus() {
+    synchronized public Status getStatus() {
         return status;
     }
     
@@ -70,7 +70,7 @@ public class Session {
      * Set the current session status
      * @param status 
      */
-    public void setStatus( Status status ) {
+    synchronized public void setStatus( Status status ) {
         this.status = status;
     }
     
@@ -154,11 +154,21 @@ public class Session {
         return copyResource;
     }
     
+    private void ValidateAddResource() {
+        switch (getStatus()){
+            case PROCESSING:
+                throw new UnsupportedOperationException("Session is running");
+            case COMPLETED:
+                throw new UnsupportedOperationException("Session is already complete");
+        }
+    }
+    
     /**
      * Add a resource in the session
      * @param resource The instance of a resource to add
      */
-    public void addResource(IResource resource) {
+    public void addResource(IResource resource) {        
+        ValidateAddResource();
         
         // remove conflicting resource
         Iterator<IResource> resourceIterator = resources.iterator();

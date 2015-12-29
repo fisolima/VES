@@ -28,10 +28,8 @@ public class FfmpegProcess extends Process implements Runnable {
 
     @Override
     public void Stop() throws VESException {
-        synchronized(session) {
-            if (session.getStatus() != Session.Status.COMPLETED)
-                session.setStatus(Session.Status.INTERRUPTED);
-        }
+        if (session.getStatus() != Session.Status.COMPLETED)
+            session.setStatus(Session.Status.INTERRUPTED);
         
         Update();
     }
@@ -41,7 +39,10 @@ public class FfmpegProcess extends Process implements Runnable {
         
         // test
         for (int i=0; i<50; i++) {
-            synchronized(session) {
+            if (session.getStatus() == Session.Status.INTERRUPTED)
+                break;
+                
+            synchronized(session) {                
                 session.setProgress(i*2);
             }
             
@@ -55,9 +56,8 @@ public class FfmpegProcess extends Process implements Runnable {
         }
         // test
         
-        synchronized(session) {
+        if (session.getStatus() != Session.Status.INTERRUPTED)
             session.setStatus(Session.Status.COMPLETED);
-        }
         
         try {
             Stop();

@@ -68,12 +68,15 @@ public class Sessions {
      
     @DELETE
     @Path("/{id}")
-    public Response deleteSession(@PathParam("id") String id) {
+    public Response deleteSession(@PathParam("id") String id) throws VESException {
         if (AppDomain.getSessionProvider().Get(id) == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("The session does not exist").build();
         }
         
         AppDomain.getSessionProvider().Delete(id);
+        AppDomain.getProcessProvider().Stop(id);
+        
+        (new File(AppDomain.getSessionProvider().GetResourcePath(id))).delete();
         
         return Response.status(Response.Status.OK).build();
     }
@@ -89,6 +92,8 @@ public class Sessions {
         
         session.addResource( new ResizeResource( widthValue, heightValue ) );
                 
+        AppDomain.getSessionProvider().Update(session);
+        
         return Response.status(Response.Status.CREATED).build();
     }
     
@@ -127,7 +132,11 @@ public class Sessions {
 
         SaveFile( uploadedInputStream, uploadedFileLocation );
         
-        AppDomain.getSessionProvider().Get(id).addResource(new VideoResource(fileDetail.getFileName()));
+        Session session = AppDomain.getSessionProvider().Get(id);
+        
+        session.addResource(new VideoResource(fileDetail.getFileName()));
+                
+        AppDomain.getSessionProvider().Update(session);
 
         return Response.status(200).build();
     }
@@ -146,8 +155,12 @@ public class Sessions {
 
         SaveFile( uploadedInputStream, uploadedFileLocation );
         
-        AppDomain.getSessionProvider().Get(id).addResource(new SubtitlesResource(fileDetail.getFileName()));
+        Session session = AppDomain.getSessionProvider().Get(id);
+        
+        session.addResource(new SubtitlesResource(fileDetail.getFileName()));
 
+        AppDomain.getSessionProvider().Update(session);
+        
         return Response.status(200).build();
     }
     

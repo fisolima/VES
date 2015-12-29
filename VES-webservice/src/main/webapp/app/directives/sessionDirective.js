@@ -39,11 +39,24 @@
                     $scope.updateStatus = function() {
                         // session status
                         switch ($scope.session.status) {
-                            case $scope.STATUS_WAITING: $scope.status = 'WAITING'; break;
-                            case $scope.STATUS_READY: $scope.status = 'READY'; break;
-                            case $scope.STATUS_PROCESSING: $scope.status = 'PROCESSING: ' + $scope.session.progress + '%'; break;
-                            case $scope.STATUS_INTERRUPTED: $scope.status = 'INTERRUPTED'; break;
-                            case $scope.STATUS_COMPLETED: $scope.status = 'COMPLETED'; break;
+                            case $scope.STATUS_WAITING: {
+                                    $scope.status = 'WAITING';
+                            } break;
+                            case $scope.STATUS_READY: {
+                                    $scope.status = 'READY';
+                            } break;
+                            case $scope.STATUS_PROCESSING: {
+                                    $scope.status = 'PROCESSING: ' + $scope.session.progress + '%';
+                                    
+                                    if ($scope.progressTimerId === null)
+                                        $scope.progressTimerId = setInterval( progress, 2000);
+                            } break;
+                            case $scope.STATUS_INTERRUPTED: {
+                                    $scope.status = 'INTERRUPTED';
+                            } break;
+                            case $scope.STATUS_COMPLETED: {
+                                    $scope.status = 'COMPLETED';
+                            } break;
                         }
                         
                         // session resources
