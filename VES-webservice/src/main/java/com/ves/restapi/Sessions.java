@@ -1,10 +1,6 @@
 package com.ves.restapi;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import com.ves.AppDomain;
@@ -13,6 +9,7 @@ import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
 import com.ves.models.ResizeData;
 import com.ves.models.ResizeResource;
+import com.ves.models.ResourceType;
 import com.ves.models.SubtitlesResource;
 import com.ves.models.VideoResource;
 import java.io.File;
@@ -20,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,6 +27,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
 @Path("sessions")
@@ -76,7 +73,13 @@ public class Sessions {
         AppDomain.getSessionProvider().Delete(id);
         AppDomain.getProcessProvider().Stop(id);
         
-        (new File(AppDomain.getSessionProvider().GetResourcePath(id))).delete();
+        String path = AppDomain.getSessionProvider().GetResourcePath(id);
+        
+        try {
+            deleteFile(new File(path));
+        } catch (Exception ex) {
+            throw new VESException(503, ex.getMessage());
+        }
         
         return Response.status(Response.Status.OK).build();
     }
@@ -116,6 +119,15 @@ public class Sessions {
         catch (Exception exc) {
             throw new VESException(503, "Unable to upload file");
         }
+    }
+    
+    private static void deleteFile(File element) {
+        if (element.isDirectory()) {
+            for (File sub : element.listFiles()) {
+                deleteFile(sub);
+            }
+        }
+        element.delete();
     }
     
     @POST
@@ -171,5 +183,30 @@ public class Sessions {
         AppDomain.getProcessProvider().Start( AppDomain.getSessionProvider(), id);
         
         return Response.status(200).build();
+    }
+    
+    @GET
+    @Path("/{id}/result")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getProcessedVideo(@PathParam("id") String id)  throws VESException {
+        Session session = AppDomain.getSessionProvider().Get(id);
+        
+        if (session == null)
+            throw new VESException(404, "Session not found");
+        
+        if (session.getStatus() != Session.Status.COMPLETED)
+            throw new VESException(400, "Video not available yet");
+            
+        String path = AppDomain.getSessionProvider().GetResourcePath(id);
+        
+        VideoResource res = (VideoResource)session.getResources(ResourceType.VIDEO).get(0);
+        
+        File file = new File(path + "/" + res.getValue());
+
+        ResponseBuilder response = Response.ok((Object) file);
+        
+        response.header("Content-Disposition", "attachment; filename=" + res.getValue());
+        
+        return response.build();
     }
 }

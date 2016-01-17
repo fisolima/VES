@@ -158,6 +158,20 @@
                                     $scope.$parent.showError('Burn failed: ' + error);
                                 });
                     };
+                    
+                    $scope.download = function () {                        
+                        sessionService.download(
+                                $scope.session.id,
+                                function () {
+                                },
+                                function(error) {
+                                    $scope.$parent.showError('Download failed: ' + error);
+                                });
+                    };
+                    
+                    $scope.cancel = function () {
+                        console.log("cancel!");
+                    };
                 },
                 link: function(scope, element, attrs) {
                     $timeout(scope.updateStatus, 0);

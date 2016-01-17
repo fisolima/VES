@@ -8,9 +8,9 @@
                 <span>Last update: {{session.progressLastModify | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
                 <br>
                 <span>Status: {{status}}</span><br><br>
-                <div ng-if="session.status===STATUS_COMPLETED"><a href="#" class="btn btn-success">Download</a></div> 
+                <div ng-if="session.status===STATUS_COMPLETED"><a href="#" class="btn btn-success" ng-click="download()">Download!!!</a></div> 
                 <div ng-if="session.status===STATUS_READY"><a href="#" class="btn btn-warning" ng-click="burn()">Burn Video</a></div>
-                <div ng-if="session.status===STATUS_PROCESSING"><a href="#" class="btn btn-danger">Cancel</a></div>
+                <div ng-if="session.status===STATUS_PROCESSING"><a href="#" class="btn btn-danger" ng-click="cancel()">Cancel</a></div>
             </div>
             
             <div class="col-md-3" ng-if="videoFile.length == 0">
@@ -33,7 +33,10 @@
                 <span>Resize the video</span><br>
                 <span>Width:</span><input type="number" ng-model="resize.widthPercentage"><br>
                 <span>Height:</span><input type="number" ng-model="resize.heightPercentage"><br>
-                <a href="#" class="btn btn-default" ng-click="resizeVideo()">Apply</a>
+                <a href="#" 
+                   ng-disabled="session.status!==STATUS_READY && session.status!==STATUS_WAITING"
+                   class="btn btn-default" 
+                   ng-click="resizeVideo()">Apply</a>
             </div>
         </div>
     </div>

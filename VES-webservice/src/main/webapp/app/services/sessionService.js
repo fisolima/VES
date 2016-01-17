@@ -87,6 +87,24 @@
                         });
         };
         
+        var _download = function(sessionId,onSuccess,onError) {
+            var sessionUrl = 'api/sessions/' + sessionId + '/result';
+            
+            $http({
+                    method:'GET',
+                    headers: {'Accept':'application/octet-stream'},
+                    cache: false,
+                    url: sessionUrl
+                }).then(
+                        //onSuccess,
+                        function (){
+                            window.open(sessionUrl, '_self', '');  
+                        },
+                        function (response) {                            
+                            onError(response.data);
+                        });
+        };
+        
         return {
             getAll: _get,
             add: _create,
@@ -95,7 +113,8 @@
             uploadVideo: _uploadVideo,
             uploadSubtitle: _uploadSubtitle,
             resize: _resize,
-            burn: _burn
+            burn: _burn,
+            download: _download
         };
         
     };

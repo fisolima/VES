@@ -9,6 +9,9 @@ var configCtrl = function($scope,configService) {
         database:''
     };
     
+    // TEST
+    $scope.direct.storage = '/home/pippo/Desktop/vesstorage';
+    
     $scope.etcd = {
         storageKey:'',
         databaseKey:'',
