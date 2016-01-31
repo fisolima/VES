@@ -16,6 +16,7 @@
                     $scope.STATUS_PROCESSING = 3;
                     $scope.STATUS_INTERRUPTED = 4;
                     $scope.STATUS_COMPLETED = 5;
+                    $scope.STATUS_FAILED = 6;
                     $scope.RES_VIDEO = 1;                    
                     $scope.RES_RESIZE = 2;
                     $scope.RES_SUBTITLE = 3;
@@ -56,6 +57,9 @@
                             } break;
                             case $scope.STATUS_COMPLETED: {
                                     $scope.status = 'COMPLETED';
+                            } break;
+                            case $scope.STATUS_FAILED: {
+                                    $scope.status = 'FAILED';
                             } break;
                         }
                         
@@ -170,7 +174,13 @@
                     };
                     
                     $scope.cancel = function () {
-                        console.log("cancel!");
+                        sessionService.cancel(
+                                $scope.session.id,
+                                function () {
+                                },
+                                function(error) {
+                                    $scope.$parent.showError('Cancel failed: ' + error);
+                                });
                     };
                 },
                 link: function(scope, element, attrs) {

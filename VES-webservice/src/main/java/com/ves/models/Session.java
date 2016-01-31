@@ -17,7 +17,8 @@ public class Session {
         READY(2),
         PROCESSING(3),
         INTERRUPTED(4),
-        COMPLETED(5);
+        COMPLETED(5),
+        FAILED(6);
         
         private final int value;
         
@@ -154,12 +155,15 @@ public class Session {
         return copyResource;
     }
     
-    private void ValidateAddResource() {
+    private void ValidateAddResource(ResourceType type) {
         switch (getStatus()){
             case PROCESSING:
                 throw new UnsupportedOperationException("Session is running");
-            case COMPLETED:
-                throw new UnsupportedOperationException("Session is already complete");
+            case COMPLETED:{
+                // allow finalvideo to be added in resources
+                if (type != ResourceType.FINALVIDEO)
+                    throw new UnsupportedOperationException("Session is already complete");
+            } break;                
         }
     }
     
@@ -168,7 +172,7 @@ public class Session {
      * @param resource The instance of a resource to add
      */
     public void addResource(IResource resource) {        
-        ValidateAddResource();
+        ValidateAddResource(resource.getType());
         
         // remove conflicting resource
         Iterator<IResource> resourceIterator = resources.iterator();
@@ -198,12 +202,16 @@ public class Session {
                     resourceReady = true;
                     break;
                     
+                case FINALVIDEO:
+                    setStatus(Status.COMPLETED);
+                    return;
+                    
                 case UNDEFINED:
                     throw new UnsupportedOperationException("Unidentified resource");
             }
         }
         
         if (videoReady && resourceReady)
-            status = Status.READY;
+            setStatus(Status.READY);
     }
 }

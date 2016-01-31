@@ -4,7 +4,8 @@ public enum ResourceType {
     UNDEFINED(0),
     VIDEO(1),
     RESIZE(2),
-    SUBTITLE(3);
+    SUBTITLE(3),
+    FINALVIDEO(4);
     
     private final int value;
         

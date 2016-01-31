@@ -6,7 +6,7 @@ import com.ves.models.Session;
 
 public abstract class Process {
     
-    private final ISessionProvider sessionProvider;
+    protected final ISessionProvider sessionProvider;
     protected final Session session;
     
     public Process( ISessionProvider sessionProvider, Session session )

@@ -87,6 +87,17 @@
                         });
         };
         
+        var _cancel = function(sessionId,onSuccess,onError) {
+            $http({
+                    method:'POST',
+                    url:'api/sessions/' + sessionId + '/cancel'
+                }).then(
+                        onSuccess,
+                        function (response) {                            
+                            onError(response.data);
+                        });
+        };
+        
         var _download = function(sessionId,onSuccess,onError) {
             var sessionUrl = 'api/sessions/' + sessionId + '/result';
             
@@ -114,7 +125,8 @@
             uploadSubtitle: _uploadSubtitle,
             resize: _resize,
             burn: _burn,
-            download: _download
+            cancel: _cancel,
+            download: _download            
         };
         
     };

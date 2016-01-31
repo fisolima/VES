@@ -11,6 +11,7 @@
                 <div ng-if="session.status===STATUS_COMPLETED"><a href="#" class="btn btn-success" ng-click="download()">Download!!!</a></div> 
                 <div ng-if="session.status===STATUS_READY"><a href="#" class="btn btn-warning" ng-click="burn()">Burn Video</a></div>
                 <div ng-if="session.status===STATUS_PROCESSING"><a href="#" class="btn btn-danger" ng-click="cancel()">Cancel</a></div>
+                <div ng-if="session.status===STATUS_FAILED"><textarea>{{session.progressDescription}}</textarea></div>
             </div>
             
             <div class="col-md-3" ng-if="videoFile.length == 0">

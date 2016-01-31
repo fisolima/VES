@@ -7,6 +7,7 @@ import com.ves.AppDomain;
 import com.ves.VESException;
 import com.ves.models.Session;
 import com.ves.helpers.JsonSerialization;
+import com.ves.models.FinalVideoResource;
 import com.ves.models.ResizeData;
 import com.ves.models.ResizeResource;
 import com.ves.models.ResourceType;
@@ -185,6 +186,15 @@ public class Sessions {
         return Response.status(200).build();
     }
     
+    @POST
+    @Path("/{id}/cancel")
+    public Response cancel(@PathParam("id") String id) throws VESException {
+        
+        AppDomain.getProcessProvider().Stop(id);
+        
+        return Response.status(200).build();
+    }
+    
     @GET
     @Path("/{id}/result")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -199,7 +209,7 @@ public class Sessions {
             
         String path = AppDomain.getSessionProvider().GetResourcePath(id);
         
-        VideoResource res = (VideoResource)session.getResources(ResourceType.VIDEO).get(0);
+        FinalVideoResource res = (FinalVideoResource)session.getResources(ResourceType.FINALVIDEO).get(0);
         
         File file = new File(path + "/" + res.getValue());
 
