@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "Starting VES"
+
+cd /home/pippo/glassfish-4.1/bin
+
+servicestart=$(./asadmin start-domain)
+
+echo $servicestart
+
+configresult=$(curl -H "Content-Type: application/json" -X PUT -d '{"storage":"/home/pippo/Desktop/vesstorage", "database":""}' http://localhost:8080/VES-webservice/api/cfg/direct)
+
+echo $configresult
+
+echo "VES start conclused"
+
+
+
+

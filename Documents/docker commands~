@@ -1,0 +1,16 @@
+docker run -i -t -v <path locale>:<path immagine> -p 8082:8080 4849:4848 <nome immagine> ./bin/bash
+
+docker commit -a killpippo <id> <nome>
+
+docker tag
+
+docker push
+
+docker ps -a
+
+docker pull killpippo/ves
+
+--- 
+
+cd glassfish4/bin
+./asadmin start-domain
