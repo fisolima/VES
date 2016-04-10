@@ -1,8 +1,26 @@
 /main
-GET "app id"
+	GET "app id"
 
+/cfg
+	GET { available:false,  configType:"undefined",  storageStatus:"",  databaseStatus:""}
 /cfg/direct
-PUT {storage:"", database:""}
+	PUT {storage:"", database:""}
 /cfg/etcd
-PUT {storageKey:"", databaseKey:"", etcdEndPoint:""}
-	
+	PUT {storageKey:"", databaseKey:"", etcdEndPoint:""}
+
+/sessions
+	GET
+/sessions
+	POST
+/sessions/{id}
+	GET <session object>
+/sessions/{id}
+	DELETE
+/sessions/{id}/resize
+	POST {widthPercentage: "", heightPercentage: ""}
+/sessions/{id}/video
+	POST <file>
+/sessions/{id}/subtitle
+	POST <file>
+/sessions/{id}/burn
+	POST
